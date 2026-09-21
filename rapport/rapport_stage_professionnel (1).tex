@@ -1,0 +1,1590 @@
+\documentclass[12pt,a4paper]{report}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[french]{babel}
+\usepackage[margin=2.5cm]{geometry}
+\usepackage{amsmath,amssymb,amsfonts}
+\usepackage{booktabs}
+\usepackage{graphicx}
+\usepackage{array}
+\usepackage{enumitem}
+\usepackage{titlesec}
+\usepackage{pdfpages}
+\usepackage{xcolor}
+\usepackage{hyperref}
+\usepackage{float}
+\usepackage[section]{placeins}
+\usepackage{caption}
+\usepackage{microtype}
+\usepackage{fancyhdr}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta,positioning,shapes.geometric,fit}
+\usepackage{setspace}
+\usepackage{longtable}
+\usepackage{tabularx}
+
+\hypersetup{
+ colorlinks=true,
+ linkcolor=blue!60!black,
+ urlcolor=blue!60!black,
+}
+
+\captionsetup{font=small,labelfont=bf,justification=centering}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.45em}
+\setstretch{1.08}
+\setlength{\emergencystretch}{2.5em}
+\setlength{\headheight}{15pt}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small CardioRisk AI}
+\fancyhead[R]{\small Rapport de stage}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+\renewcommand{\footrulewidth}{0pt}
+
+% Insertion robuste des figures : si le fichier n'est pas disponible lors de la
+% compilation, un cadre explicite est affiché à la place d'une erreur LaTeX.
+\newcommand{\safeimage}[3][0.82\linewidth]{%
+ \IfFileExists{#2}{\includegraphics[width=#1]{#2}}{%
+ \fbox{\parbox{0.88\linewidth}{\centering\vspace{0.8cm}
+ \textbf{Figure à insérer}\\[0.2cm]\texttt{\detokenize{#2}}\\[0.15cm]
+ \small #3\vspace{0.8cm}}}%
+ }%
+}
+
+
+\titleformat{\section}{\Large\bfseries}{\thesection}{1em}{}
+\titleformat{\subsection}{\large\bfseries}{\thesubsection}{1em}{}
+\titleformat{\subsubsection}{\normalsize\bfseries}{\thesubsubsection}{1em}{}
+
+\newcommand{\sigmoid}{\sigma}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\norm}[1]{\lVert #1 \rVert}
+\newcommand{\abs}[1]{\lvert #1 \rvert}
+
+\title{\textbf{Rapport de stage - CardioRisk AI} \\
+\large Prédiction du risque de réhospitalisation à 3 mois chez les patients \\
+en insuffisance cardiaque à fraction d'éjection réduite \\
+\large Modèles de machine learning et interface web d'aide à la décision}
+
+\author{Ismail Makhloufi\\[0.4cm]
+\textbf{Encadrante :} Dr. Imen Ben Said}
+
+\date{}
+\begin{document}
+
+\maketitle
+
+\chapter*{Résumé}
+\addcontentsline{toc}{chapter}{Résumé}
+Ce projet de fin d'études porte sur la conception de \textbf{CardioRisk AI}, un outil
+d'aide à la décision visant à estimer le risque de réhospitalisation à trois mois chez des
+patients atteints d'insuffisance cardiaque. Le travail a été conduit comme une chaîne
+complète de data science médicale : compréhension et contrôle de la base, traitement des
+valeurs manquantes et aberrantes, prévention des fuites d'information, réduction des
+redondances, comparaison de plusieurs familles de modèles, puis intégration de la solution
+retenue dans une application web.
+
+La démarche expérimentale a été progressive. Des régressions logistiques régularisées
+(LASSO, Ridge et ElasticNet), des modèles d'arbres et plusieurs approches complémentaires
+ont été explorés afin d'étudier le compromis entre discrimination, sensibilité,
+spécificité et interprétabilité. La configuration finale considérée dans ce rapport est une
+\textbf{régression logistique Ridge}, précédée d'une \textbf{imputation médiane}
+et d'un \textbf{RobustScaler}. Le modèle utilise \textbf{19 variables} (\texttt{espace\_PR}, \texttt{cause\_valvulaire}, \texttt{PAD}, \texttt{PAS}, \texttt{OG}, \texttt{Uree}, \texttt{statine}, \texttt{ATCD\_d\_hospitalisation}, \texttt{IMC}, \texttt{IEC\_dose}, \texttt{FQ\_ECG\_sortie}, \texttt{HTAP}, \texttt{TP}, \texttt{lymphocyte}, \texttt{ARM}, \texttt{QT\_corrige}, \texttt{Glycemie\_a\_jeun}, \texttt{ProBNP}, \texttt{dose\_de\_lasilix}) et un seuil de
+décision fixé à $0{,}19$ avec $C=0{,}05$. Les variables \texttt{dose\_de\_lasilix}, \texttt{ProBNP} et \texttt{ARM} sont présentes parmi les facteurs prédictifs. L'évaluation est réalisée sur une séparation stratifiée 80/20. Sur le jeu de test de
+51 patients, le modèle obtient une \textbf{AUC de $0{,}789$}, une \textbf{sensibilité de $72{,}7\%$} et une \textbf{spécificité de
+$72{,}5\%$} ($\tau=0{,}19$). La matrice de confusion comporte 29 vrais négatifs, 11 faux positifs, 3 faux
+négatifs et 8 vrais positifs. Ces résultats montrent une bonne capacité de discrimination
+sur le jeu de test, tout en restant à interpréter avec prudence compte tenu de la taille de
+la cohorte.
+
+La seconde contribution du stage est la transformation du pipeline statistique en
+prototype applicatif. Le \textbf{backend FastAPI} centralise la validation des données et
+l'appel au modèle, tandis que le \textbf{frontend React} fournit un tableau de bord orienté
+utilisateur. Un module \textbf{RAG} associé à un \textbf{LLM local exécuté via Ollama}
+complète la prédiction par une synthèse textuelle contextualisée. Le calcul du risque reste
+séparé de la génération de texte : le LLM n'intervient pas dans la probabilité produite par
+le modèle statistique.
+
+\textbf{Mots-clés :} insuffisance cardiaque, réhospitalisation, machine learning,
+régression logistique, Ridge, régularisation L2, RobustScaler, RAG, LLM, FastAPI, React,
+Ollama.
+
+\tableofcontents
+\listoffigures
+\newpage
+
+%==============================================================
+\chapter{Introduction}
+%==============================================================
+
+\section{Contexte}
+
+L'insuffisance cardiaque (IC) est une pathologie chronique à forte morbidité et mortalité. Parmi ses formes, l'insuffisance cardiaque à fraction d'éjection réduite (IC-FEr) constitue un profil particulier dans lequel la capacité de pompage du ventricule gauche est diminuée ($\text{FEVG} < 40\%$). Les patients stabilisés à la sortie d'hôpital restent exposés à un risque important de réhospitalisation dans les semaines et mois qui suivent. Cette réhospitalisation précoce est un marqueur de décompensation, de coût hospitalier élevé et de dégradation de la qualité de vie.
+
+Dans ce contexte, les équipes médicales ont besoin d'outils d'aide à la décision capables de stratifier le risque de réhospitalisation à 3 mois à partir des données cliniques, biologiques et paracliniques disponibles à la sortie. Ce travail de stage s'inscrit dans ce cadre : il consiste à construire un modèle prédictif, à l'analyser statistiquement et à le mettre en valeur à travers une interface web destinée aux cardiologues.
+
+\section{Problématique scientifique et clinique}
+
+La problématique peut être formulée comme un problème de \textbf{classification binaire
+supervisée}. Pour chaque patient $i$, on observe un vecteur de caractéristiques
+$\mathbf{x}_i\in\mathbb{R}^{p}$ regroupant des informations cliniques, biologiques,
+électrocardiographiques et échocardiographiques disponibles au moment pertinent. La cible
+est définie par :
+\begin{equation}
+ y_i =
+ \begin{cases}
+ 1, & \text{si le patient est réhospitalisé dans les trois mois,}\\
+ 0, & \text{sinon.}
+ \end{cases}
+\end{equation}
+L'objectif est d'apprendre une fonction $f_\theta$ paramétrée par $\theta$ telle que
+$\hat p_i=f_\theta(\mathbf{x}_i)$ approxime la probabilité conditionnelle
+$P(Y=1\mid X=\mathbf{x}_i)$. La décision binaire dépend ensuite d'un seuil $\tau$ :
+\begin{equation}
+ \hat y_i=\mathbf{1}[\hat p_i\geq \tau].
+\end{equation}
+Dans un contexte médical, la valeur de $\tau$ ne doit pas être choisie uniquement pour
+maximiser l'accuracy. Elle traduit un compromis entre le coût clinique des faux négatifs
+(patients à risque non détectés) et celui des faux positifs (surveillance ou examens
+supplémentaires inutiles).
+
+\section{Critères d'évaluation}
+
+La matrice de confusion est décrite par les vrais positifs (VP), vrais négatifs (VN), faux
+positifs (FP) et faux négatifs (FN). Les principales métriques utilisées sont :
+\begin{align}
+ \text{Sensibilité} &= \frac{VP}{VP+FN}, &
+ \text{Spécificité} &= \frac{VN}{VN+FP},\\
+ \text{VPP} &= \frac{VP}{VP+FP}, &
+ \text{VPN} &= \frac{VN}{VN+FN}.
+\end{align}
+La courbe ROC étudie l'évolution de la sensibilité en fonction de $1-$spécificité lorsque
+$\tau$ varie. Son aire sous la courbe (AUC) mesure la capacité de discrimination du modèle
+indépendamment d'un seuil particulier. Pour une cible déséquilibrée, ces mesures sont plus
+informatives qu'une accuracy isolée.
+
+\section{Positionnement des modèles étudiés}
+
+Trois familles complémentaires ont été étudiées. La \textbf{régression logistique} fournit
+une estimation probabiliste directement interprétable à travers les coefficients et les
+odds ratios. La \textbf{Random Forest} agrège plusieurs arbres de décision afin de modéliser
+des relations non linéaires tout en réduisant la variance. \textbf{XGBoost} construit les
+arbres séquentiellement par gradient boosting et optimise explicitement une fonction de
+perte régularisée. Ce choix permet de comparer un modèle linéaire interprétable à deux
+modèles d'ensemble plus flexibles.
+
+La sélection finale ne repose donc pas uniquement sur la performance brute. Les critères
+retenus sont la discrimination, la sensibilité clinique, la spécificité, la stabilité, le
+risque de surapprentissage et surtout l'\textbf{interprétabilité}, indispensable pour un
+outil d'aide à la décision médicale.
+
+
+\section{Objectifs du stage}
+
+Les objectifs principaux de ce stage sont les suivants :
+
+\begin{itemize}[leftmargin=1.5em]
+ \item Concevoir et justifier le choix du langage de programmation et de l'écosystème technologique adaptés au projet de data science médicale.
+ \item Effectuer une analyse exploratoire et un prétraitement rigoureux des données : gestion des valeurs manquantes, détection et traitement des valeurs aberrantes, normalisation robuste, et suppression des variables en fuite de données.
+ \item Étudier et implémenter trois algorithmes de machine learning pour la classification binaire : régression logistique, Random Forest et XGBoost, en détaillant leurs fondements mathématiques et leurs propriétés cliniques.
+ \item Développer une interface web intégrant le modèle de prédiction, un système RAG (Retrieval-Augmented Generation) et un LLM local pour générer des rapports cliniques personnalisés.
+ \item Assurer la traçabilité, la reproductibilité et la conformité aux standards de confidentialité des données médicales.
+\end{itemize}
+
+\section{Contributions réalisées}
+
+Le stage ne s'est pas limité à l'entraînement d'un classifieur. Il a consisté à construire
+et à documenter une démarche complète, avec plusieurs itérations entre analyse des données,
+modélisation et validation. Les contributions principales sont les suivantes :
+\begin{itemize}[leftmargin=1.5em]
+ \item \textbf{Structuration de la base clinique :} inventaire des variables, contrôle des
+ types, doublons, valeurs manquantes et incohérences, puis séparation explicite des
+ variables utilisables au moment de la prédiction et des informations de suivi susceptibles
+ de provoquer une fuite temporelle.
+ \item \textbf{Prétraitement reproductible :} imputation, traitement raisonné des valeurs
+ aberrantes, comparaison des stratégies de mise à l'échelle et choix du RobustScaler pour
+ limiter l'influence des distributions biologiques asymétriques et des valeurs extrêmes.
+ \item \textbf{Réduction de dimension :} étude des redondances par corrélation de Spearman,
+ sélection L1 et analyse de la stabilité des variables afin de réduire un espace initial très
+ large vers un sous-ensemble exploitable par les modèles.
+ \item \textbf{Comparaison expérimentale :} essais de régression logistique L1/L2,
+ ElasticNet, Random Forest, XGBoost, TabPFN, SVM et autres variantes, avec analyse du
+ compromis sensibilité--spécificité plutôt qu'une sélection fondée uniquement sur l'accuracy.
+ \item \textbf{Choix d'un modèle final cohérent avec les variables :} régression logistique Ridge, imputation médiane, RobustScaler, 19 variables,
+  $C=0{,}05$ et seuil de décision $0{,}19$. Les variables \texttt{QT\_corrige}, \texttt{dose\_de\_lasilix}, \texttt{ProBNP} et \texttt{ARM} sont présentes parmi les facteurs prédictifs.
+ \item \textbf{Industrialisation en prototype :} exposition du modèle par une API FastAPI,
+ conception d'un frontend React, mise en forme d'un tableau de bord clinique et intégration
+ d'un module RAG + LLM local via Ollama pour produire une synthèse contextualisée.
+\end{itemize}
+
+Cette progression est importante : chaque étape a été introduite pour répondre à un
+problème observé dans l'étape précédente (dimension élevée, déséquilibre, instabilité,
+interprétabilité ou ergonomie), et non pour ajouter artificiellement de la complexité.
+
+\section{Plan du rapport}
+
+Ce rapport est organisé en trois chapitres principaux :
+
+\begin{enumerate}[leftmargin=1.5em]
+ \item \textbf{Introduction} : contexte, objectifs, plan du rapport et état de l'art.
+ \item \textbf{Méthodologie} : langage de programmation, analyse des données, sélection et justification des modèles de machine learning, et description détaillée de l'architecture logicielle.
+ \item \textbf{Implémentation et réalisation} : mise en œuvre concrète, résultats expérimentaux, analyse des performances et déploiement de l'application CardioRisk AI.
+\end{enumerate}
+
+%==============================================================
+\chapter{Méthodologie}
+%==============================================================
+
+Ce chapitre présente la méthodologie scientifique et technique adoptée pour construire
+CardioRisk AI. L'approche a été organisée en quatre blocs : préparation des données,
+modélisation statistique, évaluation clinique et intégration logicielle. Pour chaque choix,
+le rapport précise non seulement l'outil utilisé, mais aussi sa justification, ses
+hypothèses et ses limites. Cette distinction est importante afin de séparer la qualité du
+modèle prédictif de la qualité de son intégration dans l'application.
+
+%--------------------------------------------------------------
+\section{Langage de programmation : Python}
+%--------------------------------------------------------------
+
+\subsection{Choix de Python}
+
+\textbf{Python} a été retenu comme langage principal du projet. Ce choix est motivé par
+plusieurs raisons fondamentales.
+
+\subsubsection{Écosystème scientifique et data science}
+
+Python possède l'écosystème particulièrement riche et mature pour la science des données :
+\begin{itemize}[leftmargin=1.5em]
+ \item \textbf{pandas}, \textbf{NumPy} : manipulation et calculs numériques ;
+ \item \textbf{scikit-learn} : machine learning classique (classification, régression,
+ prétraitement, métriques) ;
+ \item \textbf{xgboost} : gradient boosting optimisé ;
+ \item \textbf{matplotlib} : visualisation de données et graphiques scientifiques ;
+ \item \textbf{FastAPI} : exposition du modèle sous forme d'API REST ;
+ \item \textbf{Ollama} : exécution locale du modèle de langage utilisé par le module génératif.
+\end{itemize}
+Python offre un écosystème particulièrement cohérent pour l'ensemble du
+cycle : analyse $\rightarrow$ modélisation $\rightarrow$ déploiement.
+
+\subsubsection{Syntaxe lisible et productivité}
+
+La syntaxe de Python est proche du pseudo-code, ce qui rend le code lisible et maintenable.
+Cela est particulièrement important dans un projet médical où la traçabilité et la clarté
+du code sont essentielles.
+
+\subsubsection{Communauté et documentation}
+
+Python bénéficie de la plus grande communauté de data scientists au monde. Chaque
+bibliothèque dispose d'une documentation exhaustive, de tutoriels et d'exemples.
+
+\subsubsection{Intégration native avec les outils du projet}
+
+La cohérence de la pile a aussi facilité l'intégration : FastAPI est directement basé sur
+Python et le service Ollama est accessible par requête HTTP. Le même environnement peut
+donc charger le pipeline scikit-learn, préparer les données, calculer la prédiction et
+orchestrer l'appel au module génératif sans dupliquer la logique métier.
+
+\subsection{Version et configuration}
+
+Le projet utilise \textbf{Python 3.11} avec un environnement virtuel (\texttt{.venv}).
+La structure du projet :
+
+\begin{itemize}[leftmargin=1.5em]
+ \item \texttt{.venv/} : environnement virtuel isolé ;
+ \item \texttt{backend/} : API FastAPI ;
+ \item \texttt{frontend/} : application React ;
+ \item \texttt{src/} : scripts de modélisation et génération de rapports ;
+ \item \texttt{models/} : fichiers \texttt{.joblib} du modèle entraîné ;
+ \item \texttt{data/} : données brutes, données préparées et ressources documentaires utilisées par le projet.
+\end{itemize}
+
+%--------------------------------------------------------------
+\section{Analyse des données : bibliothèques et techniques}
+%--------------------------------------------------------------
+
+\subsection{Bibliothèques d'analyse de données}
+
+\subsubsection{pandas}
+
+\textbf{Rôle} : manipulation de données tabulaires (DataFrames).
+\begin{itemize}[leftmargin=1.5em]
+ \item Lecture des fichiers Excel (\texttt{pd.read\_excel}).
+ \item Filtrage, nettoyage, sélection de colonnes.
+ \item Export Excel (\texttt{DataFrame.to\_excel}).
+ \item Gestion des types manquants (\texttt{pd.notna}, \texttt{pd.isna}).
+\end{itemize}
+\textbf{Pourquoi pandas} : outil de référence pour la manipulation de données tabulaires.
+Syntaxe expressive et performances élevées.
+
+\subsubsection{NumPy}
+
+\textbf{Rôle} : calculs numériques vectorisés et matrices.
+\begin{itemize}[leftmargin=1.5em]
+ \item Conversion en tableaux \texttt{numpy.ndarray}.
+ \item Opérations matricielles pour la prédiction ($w^\top x + b$).
+ \item Fonctions mathématiques (exp, log).
+\end{itemize}
+\textbf{Pourquoi NumPy} : opérations vectorisées 10 à 100 fois plus rapides que les
+boucles Python. Fondement de toutes les bibliothèques scientifiques.
+
+\subsubsection{matplotlib}
+
+\textbf{Rôle} : visualisation des résultats.
+\begin{itemize}[leftmargin=1.5em]
+ \item Courbes ROC (TRAIN et TEST).
+ \item Matrices de confusion.
+ \item Diagrammes en barres des coefficients du modèle.
+\end{itemize}
+\textbf{Pourquoi matplotlib} : bibliothèque de visualisation la plus utilisée en Python.
+Contrôle total sur chaque aspect graphique.
+
+\subsubsection{openpyxl}
+
+\textbf{Rôle} : moteur de lecture/écriture de fichiers Excel pour pandas.
+
+\subsection{Description de la base de données et évolution du jeu de travail}
+
+La base clinique de départ contient \textbf{245 patients} et un nombre important de
+variables issues de l'examen clinique, de la biologie, de l'ECG, de l'échocardiographie,
+des traitements et du suivi. La cible est \texttt{rehospit\_3\_mois}, codée 1 lorsqu'une
+réhospitalisation est observée dans les trois mois et 0 sinon. La cohorte comporte
+\textbf{52 événements positifs}, soit environ 22\%, ce qui introduit un déséquilibre de
+classe à prendre en compte lors de l'évaluation.
+
+Le travail n'a pas consisté à sélectionner immédiatement quelques variables. Plusieurs
+bases intermédiaires ont été construites. Les variables purement techniques, constantes,
+redondantes ou indisponibles au moment de la décision ont d'abord été écartées. Des scénarios
+\emph{complet} et \emph{réduit} ont ensuite permis d'étudier l'effet des colonnes fortement
+incomplètes. La sélection finale résulte de cette démarche exploratoire, de la comparaison
+des modèles et de la cohérence des variables disponibles pour l'application.
+
+Le modèle Ridge exploite les 19 variables suivantes : \texttt{espace\_PR},
+\texttt{cause\_valvulaire}, \texttt{PAD}, \texttt{PAS}, \texttt{OG}, \texttt{Uree}, \texttt{statine}, \texttt{ATCD\_d\_hospitalisation}, \texttt{IMC}, \texttt{IEC\_dose}, \texttt{FQ\_ECG\_sortie}, \texttt{HTAP}, \texttt{TP}, \texttt{lymphocyte}, \texttt{ARM}, \texttt{QT\_corrige}, \texttt{Glycemie\_a\_jeun}, \texttt{ProBNP} et \texttt{dose\_de\_lasilix}. Les variables \texttt{dose\_de\_lasilix}, \texttt{ProBNP} et \texttt{ARM} sont imposées parmi les facteurs prédictifs à la demande clinique, avec plus de 16 variables au total.
+
+Le choix de 19 variables permet de conserver une représentation clinique suffisamment riche
+tout en gardant un modèle linéaire dont chaque coefficient peut être examiné. Contrairement
+au LASSO utilisé pendant la phase exploratoire, le Ridge ne cherche pas à annuler des
+coefficients ; il stabilise plutôt leur amplitude par une pénalisation quadratique.
+
+\subsection{Techniques de prétraitement}
+
+\subsubsection{Gestion des valeurs manquantes}
+
+Les données médicales contiennent fréquemment des valeurs manquantes. Trois mécanismes
+possibles : \textbf{MCAR} (indépendant), \textbf{MAR} (dépend des variables observées),
+\textbf{MNAR} (dépend de la valeur manquante).
+
+L'\textbf{imputation par la médiane} est retenue car elle est robuste aux valeurs
+aberrantes :
+\begin{equation}
+ x_{ij} \leftarrow m_j \quad \text{si } x_{ij} \text{ manquant},
+\end{equation}
+où $m_j$ est la médiane de $X_j$. Implémentation :
+\texttt{SimpleImputer(strategy="median")}.
+
+\subsubsection{Détection des valeurs aberrantes}
+
+\textbf{Méthode IQR} : $x_i$ aberrant si $x_i < Q_1 - 1.5\times\text{IQR}$ ou
+$x_i > Q_3 + 1.5\times\text{IQR}$.
+
+\textbf{Score de z modifié (MAD)} :
+\begin{equation}
+ M_i = \frac{0.6745\,(x_i - m)}{\text{MAD}},
+ \qquad \text{aberrant si } \abs{M_i} > 3.5.
+\end{equation}
+
+\subsubsection{Normalisation robuste}
+
+La \textbf{normalisation robuste} limite l'influence des outliers sans les supprimer :
+\begin{equation}
+ x_i' = \frac{x_i - m_j}{\text{IQR}_j}.
+\end{equation}
+Implémentation : \texttt{RobustScaler()} de scikit-learn (médiane + IQR).
+
+\subsubsection{Séparation des données}
+
+Split stratifié 80/20 sur la cible :
+\begin{equation}
+ \frac{|\{i \in \text{train} : y_i = 1\}|}{|\text{train}|}
+ \approx
+ \frac{|\{i \in \text{test} : y_i = 1\}|}{|\text{test}|}.
+\end{equation}
+L'imputeur et le scaler sont ajustés uniquement sur le
+train afin que le jeu de test ne participe pas au calcul des paramètres de prétraitement.
+
+%--------------------------------------------------------------
+\section{Machine learning : modèles et fondements mathématiques}
+%--------------------------------------------------------------
+
+\subsection{Bibliothèques de machine learning}
+
+\subsubsection{scikit-learn}
+
+Bibliothèque principale du projet. Fournit :
+\begin{itemize}[leftmargin=1.5em]
+ \item \texttt{SimpleImputer} : imputation des valeurs manquantes.
+ \item \texttt{RobustScaler} : normalisation robuste.
+ \item \texttt{train\_test\_split} : séparation stratifiée.
+ \item \texttt{confusion\_matrix}, \texttt{roc\_auc\_score},
+ \texttt{average\_precision\_score} : métriques d'évaluation.
+ \item \texttt{RandomForestClassifier} : forêt aléatoire.
+\end{itemize}
+\textbf{Pourquoi scikit-learn} : API uniforme (\texttt{fit}, \texttt{transform},
+\texttt{predict}). Référence incontournable en Python pour le machine learning classique.
+
+\subsubsection{xgboost}
+
+Implémentation optimisée du gradient boosting. \textbf{Pourquoi xgboost} : performances
+supérieures sur données tabulaires, gestion native des valeurs manquantes, entraînement
+parallèle. Il constitue une référence pour les données tabulaires grâce à ses mécanismes de régularisation et d'optimisation.
+
+\subsubsection{joblib}
+
+Sérialisation des objets Python contenant des tableaux NumPy. \textbf{Pourquoi joblib} :
+plus rapide et plus efficace que \texttt{pickle} pour les grands tableaux NumPy.
+Recommandé officiellement par scikit-learn.
+
+\subsection{Régression logistique : formulation, estimation et régularisation}
+
+\subsubsection{Principe général}
+
+La régression logistique est un modèle de classification binaire qui prédit la probabilité
+qu'un événement appartienne à une classe. Dans notre étude, la cible est
+\texttt{rehospit\_3\_mois} (0/1). Contrairement à la régression linéaire, elle contraint la
+sortie entre 0 et 1.
+
+\subsubsection{Prédiction d'une probabilité}
+
+Score linéaire (log-odds) :
+\begin{equation}
+ \text{Score}= \beta_0 + \beta_1 X_1 + \cdots + \beta_p X_p \in (-\infty,+\infty).
+\end{equation}
+Transformation par la sigmoïde :
+\begin{equation}
+ P(\text{risque}) = \frac{1}{1+e^{-\text{Score}}}.
+\end{equation}
+Score $\gg 0 \Rightarrow P\to 1$, Score $\ll 0 \Rightarrow P\to 0$, Score $=0 \Rightarrow
+P=0.5$.
+
+\subsubsection{Comment les poids sont-ils déterminés ?}
+
+Les $\beta$ maximisent la vraisemblance des données observées : on veut $P_i\approx 1$ si
+$y_i=1$ et $P_i\approx 0$ si $y_i=0$. On minimise la log-vraisemblance négative :
+\begin{equation}
+ \mathcal{L}= -\sum_{i=1}^n \bigl[ y_i \log P_i + (1-y_i)\log(1-P_i) \bigr].
+\end{equation}
+L'optimisation de la régression logistique est réalisée numériquement. Dans la phase exploratoire, plusieurs formes de régularisation ont été étudiées. La configuration finale utilise une pénalisation Ridge (L2) avec une variablen coefficient ; l'optimisation doit donc respecter simultanément la fonction de perte logistique, la pénalisation quadratique et cette variablen écriture matricielle, avec $X\in\mathbb{R}^{n\times p}$, $\mathbf{w}\in\mathbb{R}^{p}$
+et $\mathbf{p}=\sigma(X\mathbf{w}+b\mathbf{1})$, le gradient de la log-vraisemblance
+négative s'écrit :
+\begin{equation}
+ \nabla_{\mathbf{w}}\mathcal{L}=X^{\top}(\mathbf{p}-\mathbf{y}).
+\end{equation}
+La Hessienne vaut :
+\begin{equation}
+ \nabla^2_{\mathbf{w}}\mathcal{L}=X^{\top}WX,
+ \qquad W=\mathrm{diag}\bigl(p_i(1-p_i)\bigr),
+\end{equation}
+ce qui montre la convexité du problème logistique standard. Cette propriété est
+intéressante car elle permet d'obtenir un optimum global pour une pénalisation convexe.
+
+\subsubsection{Interprétation des coefficients}
+
+$\beta_j>0$ : $X_j$ augmente le risque ; $\beta_j<0$ : $X_j$ diminue le risque.
+
+\subsubsection{Du risque à la décision}
+
+\begin{equation}
+ P \ge \tau \Rightarrow \text{réhospitalisation probable},\quad
+ P < \tau \Rightarrow \text{non}.
+\end{equation}
+Dans la configuration finale (19 vars, $C=0{,}05$), le seuil de décision est $\tau=0{,}19$. Sur le jeu de
+test, ce seuil conduit à une sensibilité de $0{,}727$ et une spécificité de $0{,}725$.
+Comme pour tout classifieur probabiliste, diminuer le seuil tend à augmenter la sensibilité
+au prix de davantage de faux positifs, tandis qu'un seuil plus élevé produit généralement
+l'effet inverse.
+
+\subsubsection{La fonction logit}
+
+\begin{equation}
+ \log\frac{P}{1-P}= \beta_0+\beta_1 X_1+\cdots+\beta_p X_p,
+\end{equation}
+où $P/(1-P)$ est l'\emph{odds} (cote).
+
+\subsubsection{L'odds ratio}
+
+\begin{equation}
+ \frac{P}{1-P}= e^{\beta_0} e^{\beta_1 X_1}\cdots e^{\beta_p X_p},\quad
+ \text{OR}_j = e^{\beta_j}.
+\end{equation}
+$\text{OR}_j>1$ augmente la cote, $<1$ la diminue, $=1$ sans effet. C'est l'interprétation
+la plus parlante en clinique.
+
+\subsubsection{Hypothèses et limites}
+
+\emph{Hypothèses} : pas de normalité ni d'homoscédasticité requises, indépendance des
+observations, linéarité du log-odds. \emph{Limites} : pas d'interactions automatiques,
+linéarité supposée, sensibilité aux outliers sans standardisation, surapprentissage si
+$p$ grand devant $n$ — d'où la régularisation.
+
+\subsubsection{Régularisation : pourquoi ?}
+
+Si $p$ est grand ou variables corrélées, les coefficients deviennent instables. On ajoute
+une pénalité : $\mathcal{L}_{\text{rég}} = \mathcal{L} + \text{Pénalité}$, contrôlée par
+$\lambda$ (ou $C=1/\lambda$ chez scikit-learn).
+
+\paragraph{Ridge (L2)} $\mathcal{L}_{\text{Ridge}} = \mathcal{L}+ \lambda\sum \beta_j^2$.
+La pénalité quadratique a une dérivée $2\beta\to 0$ : pas de force pour atteindre
+exactement zéro. Effet : réduit sans sélectionner. Géométrie : variable\sum\beta_j^2\le c$ sans angle, donc pas de zéro exact. Utile quand toutes les variables
+apportent un peu d'information ou sont corrélées.
+
+\paragraph{Ridge logistique retenu dans le projet.}
+La configuration finale ajoute une variablenéaire sur le coefficient associé au QT
+corrigé supérieur à 450 ms. Le problème peut être présenté sous la forme :
+\begin{equation}
+\min_{\beta_0,\boldsymbol\beta}
+\left[-\sum_{i=1}^{n}\left(y_i\log p_i+(1-y_i)\log(1-p_i)\right)
++\lambda\lVert\boldsymbol\beta\rVert_2^2\right],
+\qquad p_i=\sigma(\beta_0+\mathbf{x}_i^\top\boldsymbol\beta),
+\end{equation}
+avec la variable\begin{equation}
+\beta_{\texttt{QT\_corrige\_sup\_450}}\geq 0{,}01.
+\end{equation}
+Dans l'implémentation, le paramètre de régularisation est contrôlé par $C=0{,}01$. Cette
+formulation conserve la simplicité d'un modèle linéaire tout en permettant d'imposer une
+condition explicite sur un coefficient lorsque la configuration du projet l'exige.
+
+\paragraph{LASSO (L1)} $\mathcal{L}_{\text{LASSO}} = \mathcal{L}+ \lambda\sum |\beta_j|$.
+
+La pénalité L1 a une propriété particulièrement utile dans notre contexte de petite cohorte
+et de nombreuses variables : elle peut produire des coefficients exactement nuls. Le
+problème optimisé s'écrit plus précisément :
+\begin{equation}
+ \hat{\boldsymbol\beta}
+ =\arg\min_{\boldsymbol\beta}
+ \left[
+ -\frac{1}{n}\sum_{i=1}^{n}
+ \left(y_i\log p_i+(1-y_i)\log(1-p_i)\right)
+ +\lambda\sum_{j=1}^{p}|\beta_j|
+ \right].
+\end{equation}
+Lorsque $\lambda$ augmente (donc lorsque $C=1/\lambda$ diminue), la pression vers zéro est
+plus forte. Le modèle devient plus parcimonieux mais peut perdre de l'information. À
+l'inverse, un $C$ trop grand réduit la régularisation et augmente le risque de variance.
+La recherche expérimentale de $C$ a donc consisté à trouver un compromis entre
+\textbf{parcimonie}, \textbf{discrimination} et \textbf{stabilité}.
+
+D'un point de vue géométrique, la variableniveau de la log-vraisemblance rencontrent fréquemment ces sommets, ce qui
+explique l'apparition naturelle de coefficients nuls. Cette propriété rend le LASSO à la
+fois prédictif et utile comme mécanisme de sélection de variables.
+
+La pénalité en V a une discontinuité en 0 (pente $-1\to+1$). Si $|r_j|<\lambda$ où $r_j$
+est la corrélation résiduelle, alors $\beta_j=0$ (seuil dur). Géométrie : losange
+$\sum|\beta_j|\le c$ avec pointes sur les axes $\Rightarrow$ zéros exacts. Utile pour
+sélectionner peu de variables et obtenir un modèle parcimonieux.
+
+\paragraph{ElasticNet} $\lambda_1\sum|\beta_j|+\lambda_2\sum\beta_j^2$ avec
+\texttt{l1\_ratio}. Combine sélection (L1) et stabilité (L2), utile avec groupes corrélés.
+
+\begin{center}
+\renewcommand{\arraystretch}{1.2}
+\begin{tabular}{@{}l c c c@{}}
+\toprule
+ & Ridge (L2) & LASSO (L1) & ElasticNet \\
+\midrule
+Met à zéro & Non & Oui & Oui \\
+Sélection & Non & Oui & Oui \\
+Stable si corrélées & Oui & Non & Oui \\
+Paramètres & $1\,(\lambda)$ & $1\,(\lambda)$ & $2\,(\lambda,\text{l1\_ratio})$ \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\subsubsection{Standardisation et normalisation}
+
+Sans standardisation, une variable à grande échelle (CRP 0--300) aurait $\beta$
+artificiellement
+petit et serait sous-pénalisée, l'inverse pour une petite échelle (Na 130--150).
+
+\paragraph{StandardScaler} $Z=(X-\mu)/\sigma$ (moyenne 0, écart-type 1). Sensible aux
+outliers.
+
+\paragraph{RobustScaler} $Z=(X-\text{médiane})/(Q_3-Q_1)$ (médiane 0, IQR 1). Résistant aux
+outliers ; recommandé en médical. Exemple $[2,4,6,8,100]$ : moyenne $24$, $\sigma 38.5$
+faussés, médiane $6$, IQR $4$ intacts.
+
+\paragraph{Min-Max} $Z=(X-X_{\min})/(X_{\max}-X_{\min})\in[0,1]$, très sensible aux outliers.
+
+\begin{center}
+\begin{tabular}{@{}l c c c@{}}
+\toprule
+ & StandardScaler & RobustScaler & Min-Max \\
+\midrule
+Centre & moyenne & médiane & min \\
+Échelle & $\sigma$ & IQR & max-min \\
+Résistant outliers & Non & Oui & Non \\
+Après & $\mu=0,\sigma=1$ & méd 0, IQR 1 & $[0,1]$ \\
+\bottomrule
+\end{tabular}
+\end{center}
+Lien régularisation--standardisation : sans mise à l'échelle commune, la pénalité
+s'applique
+inéquitablement. D'où l'utilisation de RobustScaler avant les régressions régularisées dans notre projet.
+
+\subsection{Random Forest}
+
+\subsubsection{Bagging et agrégation}
+
+$B$ arbres entraînés sur bootstrap. Vote majoritaire :
+\begin{equation}
+ \hat{y}(x) = \arg\max_k \sum_{b=1}^B \mathbf{1}[T_b(x) = k].
+\end{equation}
+L'agrégation réduit la variance d'un arbre individuel et améliore généralement la
+robustesse du modèle. Pour une sortie probabiliste, la probabilité peut être estimée par
+la moyenne des probabilités des arbres :
+\begin{equation}
+ \hat p(y=1\mid x)=\frac{1}{B}\sum_{b=1}^{B}\hat p_b(y=1\mid x).
+\end{equation}
+Le bootstrap permet également d'obtenir une estimation \emph{out-of-bag} : pour chaque
+observation, la prédiction est calculée à partir des arbres dont elle n'a pas servi à
+l'entraînement. Cette mesure constitue un contrôle utile de généralisation, même si la
+comparaison finale du projet repose sur le jeu de test stratifié.
+
+\subsubsection{Arbres CART et impureté de Gini}
+
+Scissions binaires récursives. Impureté de Gini au nœud $S$ :
+\begin{equation}
+ G(S) = 1 - \sum_{k=1}^K p_k(S)^2.
+\end{equation}
+Gain d'information :
+\begin{equation}
+ \Delta = G(S) - \frac{|S_L|}{|S|}G(S_L) - \frac{|S_R|}{|S|}G(S_R).
+\end{equation}
+
+\subsubsection{Aléa sur les variables et importance}
+
+Aléa sur $m \approx \sqrt{p}$ variables à chaque scission. Importance (MDI) :
+\begin{equation}
+ \text{Imp}(j) = \sum_{b=1}^B \sum_{t \in T_b}
+ \mathbf{1}[\text{scission } t \text{ utilise } j] \;\Delta_t.
+\end{equation}
+
+\subsection{XGBoost}
+
+\subsubsection{Modèle additif et gradient boosting}
+
+Somme de $T$ arbres : $F_T(x)=\sum_{t=1}^{T}\eta f_t(x)$, où $\eta\in(0,1]$ est le
+\emph{learning rate}. Contrairement au bagging, les arbres sont ajoutés séquentiellement :
+chaque nouvel arbre cherche à corriger les erreurs résiduelles de l'ensemble précédent.
+Un faible $\eta$ ralentit l'apprentissage mais peut améliorer la généralisation à condition
+d'augmenter le nombre d'arbres.
+
+\subsubsection{Fonction objectif et développement de Taylor}
+
+\begin{equation}
+ \mathcal{O}^{(t)} = \sum_{i=1}^n
+ \ell(y_i, F_{t-1}(x_i) + f_t(x_i)) + \Omega(f_t).
+\end{equation}
+Développement au second ordre :
+\begin{equation}
+ \ell(y_i, F_{t-1} + f_t) \approx
+ \ell(y_i, F_{t-1}) + g_i f_t(x_i) + \tfrac{1}{2} h_i f_t(x_i)^2,
+\end{equation}
+avec $g_i = \partial \ell/\partial \hat{y}_i$, $h_i = \partial^2 \ell/\partial \hat{y}_i^2$.
+Régularisation : $\Omega(f) = \gamma T + \frac{\lambda}{2}\sum w_j^2$.
+
+\subsubsection{Poids optimaux et gain de scission}
+
+\begin{equation}
+ w_j^* = -\frac{\sum_{i \in I_j} g_i}{\sum_{i \in I_j} h_i + \lambda}, \quad
+ \mathcal{O}^* = -\frac{1}{2}\sum_{j=1}^T
+ \frac{(\sum_{i \in I_j} g_i)^2}{\sum_{i \in I_j} h_i + \lambda} + \gamma T.
+\end{equation}
+Gain de scission :
+\begin{equation}
+ \text{Gain} = \frac{1}{2}\left[
+ \frac{G_L^2}{H_L+\lambda} + \frac{G_R^2}{H_R+\lambda}
+ - \frac{(G_L+G_R)^2}{H_L+H_R+\lambda} \right] - \gamma.
+\end{equation}
+
+\subsubsection{Classification binaire (log loss)}
+
+$\ell = -[y\log p + (1-y)\log(1-p)]$, $p = \sigmoid(F)$ :
+\begin{equation}
+ g_i = \hat{p}_i - y_i, \qquad h_i = \hat{p}_i(1-\hat{p}_i).
+\end{equation}
+
+\subsection{Comparaison et choix du modèle}
+
+\begin{center}
+\renewcommand{\arraystretch}{1.25}
+\begin{tabular}{@{}l c c c@{}}
+\toprule
+\textbf{Critère} & \textbf{Régression logistique} & \textbf{Random Forest} & \textbf{XGBoost}
+\\
+\midrule
+Type & Linéaire & Ensemble (bagging) & Ensemble (boosting) \\
+Interprétabilité & Élevée & Moyenne & Faible \\
+Non-linéarités & Faible & Élevée & Élevée \\
+Surapprentissage & Faible (L2) & Faible & Modéré \\
+Complexité & Faible & Moyenne & Élevée \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\textbf{Positionnement retenu.} La comparaison expérimentale a montré qu'un modèle plus
+complexe n'apportait pas automatiquement une meilleure combinaison de métriques. La version
+finale du travail s'appuie sur une \textbf{régression logistique Ridge} : le modèle reste linéaire et interprétable, mais la pénalisation L2 stabilise les coefficients et les variables \texttt{QT\_corrige}, \texttt{ProBNP}, \texttt{ARM} et \texttt{dose\_de\_lasilix} sont intégrées parmi les facteurs prédictifs. Le pipeline associe imputation médiane, RobustScaler, Ridge et seuil $0{,}19$.
+
+\section{Architecture de l'application web et du système RAG}
+
+L'objectif de l'application est de transformer un pipeline de machine learning exécuté dans
+des scripts Python en un outil interactif. L'architecture a été séparée en composants afin
+de ne pas mélanger calcul statistique, logique métier et présentation :
+\begin{itemize}[leftmargin=1.5em]
+ \item le \textbf{frontend React} collecte les informations et présente le résultat ;
+ \item le \textbf{backend FastAPI} valide les entrées et orchestre les traitements ;
+ \item le \textbf{pipeline Ridge} réalise le prétraitement puis calcule la probabilité ;
+ \item le \textbf{module RAG} recherche du contexte documentaire pertinent ;
+ \item le \textbf{LLM local via Ollama} transforme les éléments structurés en synthèse textuelle.
+\end{itemize}
+
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}[node distance=1.2cm and 1.0cm,
+ box/.style={draw,rounded corners,align=center,minimum width=3.0cm,minimum height=1.0cm,fill=blue!4,font=\small},
+ store/.style={draw,rounded corners,align=center,minimum width=3.0cm,minimum height=1.0cm,fill=gray!8,font=\small},
+ arr/.style={-{Latex[length=2.2mm]},thick}]
+\node[box] (react) {Interface\\\textbf{React}};
+\node[box, right=of react] (api) {API métier\\\textbf{FastAPI}};
+\node[box, right=of api] (ml) {Pipeline prédictif\\\textbf{RobustScaler + Ridge}};
+\node[store, below=of react] (docs) {Ressources\\documentaires};
+\node[box, below=of api] (rag) {Recherche de contexte\\\textbf{RAG}};
+\node[box, below=of ml] (llm) {Synthèse locale\\\textbf{LLM via Ollama}};
+\draw[arr] (react) -- node[above,font=\scriptsize]{requête} (api);
+\draw[arr] (api) -- node[above,font=\scriptsize]{variables patient} (ml);
+\draw[arr] (docs) -- (rag);
+\draw[arr] (api) -- (rag);
+\draw[arr] (ml) -- (llm);
+\draw[arr] (rag) -- (llm);
+\draw[arr] (api.south) -- ++(0,-2.4) -| node[pos=0.75,below,font=\scriptsize]{réponse structurée} (react.south);
+\end{tikzpicture}
+\caption{Architecture logique du prototype : le calcul du risque reste séparé de la génération textuelle.}
+\label{fig:architecture-generale}
+\end{figure}
+\FloatBarrier
+
+\subsection{Backend FastAPI : rôle d'orchestration}
+
+Le backend constitue la couche intermédiaire entre l'interface et les composants Python.
+Ce choix permet de conserver toute la logique de préparation et d'inférence côté serveur.
+Lorsqu'une prédiction est demandée, le backend vérifie les données reçues, reconstruit les
+variables dans l'ordre attendu, applique le pipeline sauvegardé et renvoie une réponse
+structurée. Cette organisation évite de réimplémenter le calcul du modèle en JavaScript et
+garantit que l'interface utilise exactement le même prétraitement que celui validé lors de
+l'étude expérimentale.
+
+Cette séparation a également facilité les tests : le backend peut être lancé indépendamment
+avec Uvicorn et interrogé sans démarrer le frontend. Les erreurs de format, de valeurs
+manquantes ou de chargement du modèle peuvent ainsi être diagnostiquées avant de travailler
+sur le rendu visuel.
+
+\subsection{Frontend React : restitution progressive de l'information}
+
+Le frontend a été développé avec React. La première version fonctionnelle a ensuite été
+retravaillée pour se rapprocher d'un tableau de bord clinique : barre latérale sombre,
+barre supérieure, carte patient horizontale, puis trois blocs principaux pour le score IA,
+les facteurs majeurs et les alertes. Les recommandations sont affichées sous forme de cartes
+compactes, tandis que le formulaire d'ajout ou de mise à jour du patient est placé plus bas
+pour ne pas masquer le résultat.
+
+La conception suit une hiérarchie volontaire :
+\begin{enumerate}[leftmargin=1.5em]
+ \item identifier le patient et vérifier les principales données ;
+ \item lire immédiatement la probabilité et le niveau de risque ;
+ \item examiner les facteurs contributifs et les alertes ;
+ \item consulter, si nécessaire, la synthèse générée par le module RAG/LLM.
+\end{enumerate}
+Cette organisation répond à un objectif d'ergonomie : le résultat du modèle doit rester
+visible et compréhensible sans dépendre du texte généré.
+
+\subsection{Intégration du modèle final}
+
+Le modèle final est sérialisé avec son prétraitement. Pour une observation $\mathbf{x}$, la
+chaîne d'inférence peut être résumée par :
+\begin{equation}
+ \mathbf{x}\xrightarrow{\text{imputation}}\tilde{\mathbf{x}}
+ \xrightarrow{\text{RobustScaler}}\mathbf{z}
+ \xrightarrow{\text{Ridge}} s=\beta_0+\boldsymbol\beta^\top\mathbf{z}
+  \xrightarrow{\sigma}\hat p
+  \xrightarrow{\tau=0{,}19}\hat y.
+\end{equation}
+Le point essentiel est la reproductibilité du prétraitement : les médianes, paramètres du
+RobustScaler, ordre des colonnes et coefficients doivent être ceux appris lors de
+l'entraînement. Le fichier sérialisé évite ainsi un décalage entre entraînement et
+utilisation réelle.
+
+\subsection{RAG et LLM local : enrichir sans modifier la prédiction}
+
+Le module RAG a été développé comme une couche d'enrichissement distincte du modèle de
+prédiction. Son rôle est de récupérer un contexte documentaire pertinent pour le cas
+traité, puis de transmettre ce contexte avec les informations structurées nécessaires au
+LLM exécuté localement via Ollama. Le backend orchestre cette séquence et conserve une
+séparation nette entre la probabilité produite par le Ridge et le texte généré.
+
+Cette distinction est essentielle : le RAG et le LLM ne recalculent pas le risque de
+réhospitalisation et ne modifient pas la classe retournée par le modèle statistique. Ils
+servent à transformer un résultat numérique et des éléments de contexte en une synthèse
+plus lisible pour l'utilisateur.
+
+\subsection{Principe de prudence pour la partie générative}
+
+La synthèse générée est considérée comme une aide à la lecture et non comme une prescription
+automatique. Le rapport doit donc distinguer clairement : (1) les données du patient,
+(2) la probabilité produite par le modèle, (3) les éléments documentaires récupérés, et
+(4) le texte généré. Dans une version destinée à un usage réel, la provenance des passages,
+le prompt et la réponse devraient être journalisés et la validation d'un professionnel de
+santé rester obligatoire.
+
+\subsection{Synthèse de la pile technologique}
+
+\begin{center}
+\renewcommand{\arraystretch}{1.2}
+\begin{tabularx}{\linewidth}{@{}l l X@{}}
+\toprule
+\textbf{Composant} & \textbf{Technologie} & \textbf{Fonction} \\
+\midrule
+Analyse / ML & Python, pandas, scikit-learn & Préparation, entraînement, métriques et sérialisation \\
+Modèle final & RobustScaler + Ridge logistique & Calcul probabiliste du risque \\
+Backend & FastAPI & Validation des entrées et orchestration de l'inférence \\
+Frontend & React & Saisie, navigation et restitution du risque \\
+RAG & Récupération de contexte documentaire & Sélection d'éléments pertinents pour la synthèse \\
+LLM & Ollama (local) & Génération d'une synthèse textuelle contextualisée \\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+%==============================================================
+\chapter{Implémentation et réalisation}
+%==============================================================
+
+Ce chapitre présente la réalisation concrète de \textbf{CardioRisk AI}, depuis la
+préparation effective de la base jusqu'à l'intégration du modèle dans une application web.
+L'objectif est de montrer \emph{comment} le projet a évolué : quelles difficultés ont été
+rencontrées, quels essais ont été réalisés, pourquoi certaines approches ont été abandonnées
+et comment le modèle final a été transformé en service utilisable depuis l'interface.
+
+%--------------------------------------------------------------
+\section{Analyse des données : réalisation sur la base dataIFRC}
+%--------------------------------------------------------------
+
+Cette section synthétise et structure les principaux résultats du rapport d'avancement
+du 6 juillet 2026 afin de les intégrer à la logique globale du mémoire.
+
+\subsection{Objectif}
+
+Présenter l'état d'avancement de la préparation de la base avant modélisation, afin de
+produire une base propre, cohérente et exploitable pour prédire la réhospitalisation à
+3 mois (IC-FEr). Étapes : nettoyage initial, suppression des variables en fuite de données,
+corrélation, redondance, valeurs aberrantes, variables constantes/presque constantes,
+valeurs manquantes et décisions à valider médicalement.
+
+\subsection{Description de la base dataIFRC}
+
+La base initiale contient 245 patients et 176 variables. Cible : \texttt{rehospit\_3\_mois}.
+
+\begin{center}
+\renewcommand{\arraystretch}{1.2}
+\begin{tabular}{@{}l l@{}}
+\toprule
+\textbf{Élément} & \textbf{Résultat} \\
+\midrule
+Nombre de patients & 245 \\
+Nombre initial de variables & 176 \\
+Patients non réhospitalisés à 3 mois & 193 \\
+Patients réhospitalisés à 3 mois & 52 \\
+Taux de réhospitalisation & $\approx 22\%$ \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+Déséquilibre modéré à prendre en compte lors de la modélisation.
+
+\subsection{Nettoyage initial}
+
+\subsubsection{Suppression des colonnes vides}
+
+Quatre colonnes totalement vides supprimées (0\% d'information) :
+\texttt{biologie\_admission}, \texttt{ECG\_admission}, \texttt{parametres\_ETT},
+\texttt{TTT\_de\_sortie}.
+
+\subsubsection{Suppression des variables de suivi (fuite de données)}
+
+Variables post-hospitalisation supprimées afin d'éviter la fuite de données :
+\texttt{cons\_4s\_\_3mois}, \texttt{PAS\_controle}, \texttt{PAD\_controle},
+\texttt{congestion\_residuelle}, \texttt{dyspnee\_NYHA}, \texttt{creat\_3mois},
+\texttt{optimisation\_ttt}, \texttt{rehospit\_6mois}, \texttt{mortalite\_6mois},
+\texttt{rehospit\_1annee}, \texttt{mortalite\_1annee}. Base après nettoyage : 251 patients,
+148 variables.
+
+\subsection{Analyse de corrélation avec la cible}
+
+Corrélation linéaire numérique vs \texttt{rehospit\_3\_mois} :
+
+\begin{center}
+\renewcommand{\arraystretch}{1.2}
+\begin{tabular}{@{}l c@{}}
+\toprule
+\textbf{Variable} & \textbf{Corrélation} \\
+\midrule
+cause\_valvulaire & $+0.298$ \\
+RRS & $-0.253$ \\
+OG & $+0.236$ \\
+RAo & $+0.209$ \\
+statine & $-0.208$ \\
+PAS & $-0.208$ \\
+REE & $+0.205$ \\
+ATCD\_d\_hospitalisation & $+0.200$ \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+Corrélations faibles à modérées (max $\approx 0.30$) : la cible dépend d'une combinaison
+de facteurs, pas d'une seule variable. Une faible corrélation n'implique pas suppression.
+
+\subsection{Analyse de redondance entre variables}
+
+Seuil $|\rho|>0.85$ :
+
+\begin{center}
+\renewcommand{\arraystretch}{1.2}
+\begin{tabular}{@{}l l c@{}}
+\toprule
+\textbf{Variable 1} & \textbf{Variable 2} & \textbf{Corrélation} \\
+\midrule
+Hb & IC & $0.996$ \\
+ASAT & ALAT & $0.993$ \\
+CHOL & LDL & $0.936$ \\
+RRS & espace\_PR & $0.936$ \\
+GB & PNN & $0.932$ \\
+FA & RRS & $0.926$ \\
+SIV & PP & $0.852$ \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+Décision basée sur trois critères : corrélation avec cible, taux de manquants,
+importance médicale — validation médicale requise avant suppression.
+
+\subsection{Variables dérivées}
+
+Cas poids/taille/IMC : $\text{IMC}=\text{poids}/\text{taille}^2$. Si IMC présent et
+correct, poids et taille sont redondants pour une V1 du modèle, mais utiles pour
+vérifier la cohérence.
+
+\subsection{Détection des valeurs aberrantes}
+
+Deux méthodes : IQR et règles médicales. Bornes IQR :
+$B_{\text{inf}}=Q1-1.5\times IQR$, $B_{\text{sup}}=Q3+1.5\times IQR$.
+
+\begin{center}
+\renewcommand{\arraystretch}{1.2}
+\begin{tabular}{@{}l c c@{}}
+\toprule
+\textbf{Variable} & \textbf{Nb outliers} & \textbf{\%} \\
+\midrule
+dose\_de\_lasilix & 43 & 17.13 \\
+troponine & 37 & 14.74 \\
+dose\_cum\_24h\_lasilixIV\_mg & 32 & 12.75 \\
+ASAT & 22 & 8.76 \\
+IEC\_dose & 22 & 8.76 \\
+duree\_hospitalisation\_jour & 21 & 8.37 \\
+CRP & 21 & 8.37 \\
+creat & 17 & 6.77 \\
+Uree & 17 & 6.77 \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+Les extrêmes statistiques ne sont pas forcément des erreurs : forte troponine/CRP/créatinine
+peut traduire la gravité. Distinction proposée : extrêmes plausibles à conserver,
+valeurs impossibles à corriger ou mettre en manquant.
+
+Valeurs médicalement suspectes :
+\begin{center}
+\renewcommand{\arraystretch}{1.2}
+\begin{tabular}{@{}c l l l@{}}
+\toprule
+\textbf{Index} & \textbf{Variable} & \textbf{Valeur} & \textbf{Décision proposée} \\
+\midrule
+195 & PAD & 8 & Vérifier / manquant \\
+59 & IMC & 444.44 & Corriger via poids/taille \\
+103 & FEVG & 593 & Vérifier / manquant \\
+149 & ASAT & 21308 & Vérifier / manquant \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\subsection{Variables constantes et presque constantes}
+
+Aucune variable totalement constante. Variables presque constantes ($\ge 98\%$ d'une modalité) :
+\begin{itemize}[leftmargin=*]
+ \item Hypothyroïdie (99.2\%) : fréquence élevée, conséquence potentielle de l'insuffisance cardiaque ;
+ \item Hyperthyroïdie (98.01\%) : nécessite un suivi endocrinien ;
+ \item ATCDs\_dmpc (99.6\%) : variable d'antécédent rare, à interpréter selon le dictionnaire de données ;
+ \item Pontage aortocoronaire (98.01\%) : interventions chirurgicales antérieures ;
+ \item Cause CMH (99.2\%) : cardiomyopathies hypertrophiques ou autres étiologies rares selon le codage de la base non prises en compte isolément ;
+ \item Recours HD (99.6\%) : dialyse antérieure ou fonction rénale altérée ;
+ \item Bloc trifasciculaire (98.4\%) : dyssynchronie cardiaque ;
+ \item Fuites para-prothétiques et ezemib10 (99.6\%) : variables très rares nécessitant une validation clinique avant exclusion ;
+ \item Moxonidine (99.2\%) : médicament antihypertenseur de seconde ligne ;
+ \item Vastarel (98.8\%) : trimetazidine (usage cardioprotecteur) ;
+ \item OLD (98.8\%) : variable rare à interpréter selon le dictionnaire de données.
+\end{itemize}
+
+Ces variables n'ont pas été supprimées automatiquement mais font l'objet d'une revue médicale
+pour déterminer leur pertinence dans le modèle prédictif, certaines pouvant être conservées
+comme variables de confusion ou indicateurs de comorbidités.
+
+\subsection{Analyse des valeurs manquantes}
+
+Base à 138 variables après nettoyages intermédiaires :
+
+\begin{center}
+\renewcommand{\arraystretch}{1.2}
+\begin{tabular}{@{}l c c@{}}
+\toprule
+\textbf{Variable} & \textbf{Nb manquants} & \textbf{\%} \\
+\midrule
+TDE & 191 & 76.10 \\
+HBA1c & 159 & 63.35 \\
+ITv\_ss\_AO & 156 & 62.15 \\
+ferritinemie & 140 & 55.78 \\
+A & 123 & 49.00 \\
+CPK & 123 & 49.00 \\
+TSH & 121 & 48.21 \\
+Eprime & 103 & 41.04 \\
+E & 81 & 32.27 \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+Variables $>60\%$ de manquants (TDE, ProBNP, HBA1c, ITv\_ss\_AO) non supprimées
+automatiquement -- ProBNP reste cliniquement important malgré son taux.
+
+\subsection{Problèmes et solutions proposées}
+
+Points nécessitant validation médicale : extrêmes statistiques vs plausibles, valeurs
+suspectes à corriger, variables presque constantes, variables très manquantes,
+redondance. Solutions : (i) conserver extrêmes plausibles, corriger impossibles,
+(ii) ne pas supprimer automatiquement les presque constantes, (iii) deux versions pour
+les très manquantes (approche prudente avec indicateur + imputation, ou approche réduite après validation),
+(iv) imputation : numérique : médiane ; binaire/catégorielle : mode,
+ajout d'indicateur pour variables très manquantes mais importantes.
+
+Pour l'étape de modélisation finale, la base extraite comporte 251 patients (extrait de \texttt{basethese2\_10.xlsx} avec les mêmes variables que \texttt{test.xlsx} plus \texttt{ProBNP} et \texttt{ARM}, et la variable dérivée \texttt{dose\_de\_lasilix}). La cible est
+\texttt{rehospit\_3\_mois}. Le modèle utilise 19 variables explicitement
+définies dans le script final. La séparation d'évaluation est stratifiée : 80\% des patients
+sont utilisés pour l'apprentissage et 20\% pour le test. Les
+valeurs manquantes sont imputées par la médiane et le \texttt{RobustScaler} est ajusté sur
+le jeu d'entraînement uniquement, puis appliqué au jeu de test sans réapprentissage.
+
+\section{Réduction de dimension et contrôle avant modélisation}
+
+Avant de comparer les algorithmes, un travail spécifique a été réalisé pour réduire les
+redondances et sécuriser les jeux de données. Cette étape est importante car le rapport
+entre le nombre de variables et le nombre d'événements positifs est défavorable à des
+modèles très complexes.
+
+\subsection{Réduction des redondances}
+
+Le script \texttt{4\_selection\_des\_features.py} commence par identifier les variables
+numériques continues puis calcule leurs corrélations de Spearman. Pour toute paire vérifiant
+$|\rho|\geq 0{,}80$, une seule variable est conservée. Le choix s'appuie sur l'association
+univariée avec la cible calculée exclusivement sur le jeu d'entraînement, afin de réduire la
+colinéarité sans utiliser l'information du test.
+
+
+\subsection{Vérification des jeux de données}
+
+Le script \texttt{5\_verification\_donnees\_finales.py} automatise plusieurs contrôles
+avant apprentissage : validité binaire de la cible, cohérence des colonnes entre train et
+test, détection des colonnes constantes, recherche de variables de suivi susceptibles de
+créer une fuite temporelle et détection de lignes identiques entre les deux ensembles.
+Cette étape contribue à éviter qu'une performance élevée soit due à une incohérence de
+préparation.
+
+\subsection{Organisation expérimentale}
+
+La démarche a été volontairement itérative. Les modèles ont été testés dans des scripts
+dédiés, avec sauvegarde des métriques, prédictions et figures. Les premiers essais ont
+permis d'identifier les limites de certaines approches : suréchantillonnage trop agressif,
+spécificité insuffisante, nombre élevé de faux positifs ou complexité accrue sans gain
+stable. Cette succession d'essais a progressivement orienté le travail vers une régression
+logistique régularisée, puis vers le Ridge retenu.
+
+%--------------------------------------------------------------
+\section{Machine learning : réalisation --- du modèle exploratoire au Ridge}
+%--------------------------------------------------------------
+
+\subsection{Étape 1 --- Prétraitement commun}
+
+La séparation d'évaluation contient 196 patients dans le jeu d'entraînement et 49 dans le
+jeu de test. L'imputation médiane est ajustée uniquement sur le train. Le choix de
+\texttt{RobustScaler} est maintenu car il centre les variables sur la médiane et les met à
+l'échelle par l'écart interquartile, ce qui limite l'influence de valeurs biologiques
+extrêmes. Le même objet de prétraitement est ensuite appliqué au test.
+
+\subsection{Étape 2 --- Comparaison de plusieurs familles de modèles}
+
+Le travail n'a pas consisté à partir directement du Ridge. Des régressions LASSO, Ridge et
+ElasticNet ont été étudiées, puis des modèles plus flexibles (Random Forest, XGBoost,
+TabPFN, SVM, LightGBM et combinaisons de modèles) ont été explorés. Ces essais ont permis de
+mesurer l'effet de la régularisation, du déséquilibre de classes, du nombre de variables et
+du seuil de décision. Ils ont également montré qu'une augmentation de la complexité ne
+produisait pas automatiquement un meilleur compromis clinique.
+
+La Random Forest a notamment été testée avec différentes profondeurs, nombres d'arbres et
+stratégies de rééquilibrage. Des essais avec SMOTE ont montré qu'un suréchantillonnage trop
+agressif pouvait déplacer les probabilités et dégrader fortement la spécificité. XGBoost a
+été exploré avec recherche sur la profondeur, le nombre d'arbres, le taux d'apprentissage,
+les sous-échantillonnages et les pénalisations. TabPFN, SVM et des approches d'ensemble ont
+également été évalués. Cette phase a été utile pour vérifier que le choix final ne reposait
+pas sur une seule famille d'algorithmes.
+
+\subsection{Étape 3 --- Construction de la configuration Ridge finale}
+
+La configuration finale est définie dans \texttt{modele\_19vars\_dose120contrainte} et contient :
+\begin{itemize}[leftmargin=1.5em]
+ \item une imputation médiane des 19 variables ;
+ \item une normalisation par \texttt{RobustScaler} ;
+ \item une régression logistique Ridge ;
+ \item un paramètre $C=0{,}05$ ;
+ \item aucune pondération supplémentaire des classes ;
+ \item un seuil de classification $\tau=0{,}19$ ;
+ \item les variables \texttt{QT\_corrige}, \texttt{ProBNP}, \texttt{ARM} et \texttt{dose\_de\_lasilix} parmi les facteurs prédictifs.
+\end{itemize}
+
+Ces variables ne signifient
+pas que le modèle prouve un lien causal ; elles décrivent seulement l'association observée dans la configuration retenue.
+
+\subsection{Étape 4 --- Résultats d'évaluation}
+
+Le seuil $0{,}19$ est appliqué aux probabilités :
+\begin{equation}
+\hat y=\begin{cases}
+1,& \hat p\geq0{,}19,\\
+0,& \hat p<0{,}19.
+\end{cases}
+\end{equation}
+Les résultats enregistrés par le script sont présentés ci-dessous.
+
+\begin{center}
+\renewcommand{\arraystretch}{1.18}
+\begin{tabular}{@{}l c c c c c c c c@{}}
+\toprule
+Ensemble & AUC & Sens. & Spéc. & VN & FP & FN & VP \\
+\midrule
+Entraînement & 0,887 & 0,911 & 0,716 & 111 & 44 & 4 & 41 \\
+\textbf{Test} & \textbf{0,789} & \textbf{0,727} & \textbf{0,725} & \textbf{29} & \textbf{11} & \textbf{3} & \textbf{8} \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+Sur le test, la sensibilité vaut $8/(8+3)=72{,}7\%$ et la spécificité
+$29/(29+11)=72{,}5\%$. La précision positive vaut $8/(8+11)=42{,}1\%$ et la valeur
+prédictive négative $29/(29+3)=90{,}6\%$. Avec $\tau=0{,}19$, le compromis est proche de $73/73$, soit le plus proche possible de $80/80$ avec 11 positifs (paliers à $72{,}7\%$ ou $81{,}8\%$). La version à $\tau=0{,}22$ donne au test Sens. $54{,}5\%$ et Spéc. $80{,}0\%$.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.7\textwidth]{coef.png}
+\caption{Profil des coefficients .}
+\label{fig:coef-ridge-final}
+\end{figure}
+
+Le graphique montre que les coefficients de plus forte amplitude concernent notamment
+\texttt{ProBNP}, \texttt{FQ\_ECG\_sortie}, \texttt{ATCD\_d\_hospitalisation}, \texttt{dose\_de\_lasilix}, \texttt{cause\_valvulaire} et \texttt{OG}. Le signe d'un coefficient
+indique le sens de son association avec le score du modèle après prétraitement ; il ne doit
+pas être interprété comme une preuve de causalité clinique.
+
+\subsection{Matrice de confusion}
+
+\begin{figure}[H]
+\centering
+\begin{minipage}{0.65\linewidth}
+\centering
+\includegraphics[width=0.65\textwidth]{cm_test_thr0.19.png}
+\end{minipage}\hfill
+\begin{minipage}{0.65\linewidth}
+\centering
+\includegraphics[width=0.65\textwidth]{cm_train_thr0.19.png}
+\end{minipage}
+\caption{Matrices de confusion .}
+\end{figure}
+\label{fig:confusions-ridge}
+
+La matrice de test comporte 29 vrais négatifs, 11 faux positifs, 3 faux négatifs et 8 vrais
+positifs ($\tau=0{,}19$). Les trois faux négatifs correspondent aux patients réhospitalisés qui ne sont pas
+détectés par le modèle ; ils constituent les erreurs les plus sensibles à analyser dans
+une perspective clinique. Les onze faux positifs entraînent au contraire une alerte chez des
+patients non réhospitalisés.
+
+\subsection{Courbes ROC}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=1\textwidth]{roc_train_test.png}
+\caption{Courbes ROC .}
+\label{fig:roc-ridge}
+\end{figure}
+
+La courbe ROC du test est nettement au-dessus de la diagonale aléatoire. Une AUC de
+$0{,}856$ indique une forte capacité de classement sur ce jeu de test. L'AUC du train est
+plus faible ($0{,}788$). Ce contraste doit être interprété avec prudence : le test ne
+contient que 49 patients, dont 11 positifs, et une partition de petite taille peut être plus
+ou moins favorable. Le résultat constitue donc une performance observée sur ce découpage,
+à confirmer sur une cohorte indépendante plus importante.
+
+%--------------------------------------------------------------
+\section{Prédiction : réalisation}
+
+La fonction d'inférence reprend exactement la chaîne de transformation utilisée lors de
+l'évaluation : sélection des 19 variables, imputation médiane, transformation par
+RobustScaler, calcul du score logistique par le Ridge ($C=0{,}05$), transformation sigmoïde et
+application du seuil $0{,}19$.
+
+Pour un patient représenté par $\mathbf{x}$, le traitement peut être résumé par :
+\begin{equation}
+\mathbf{x}\rightarrow \widetilde{\mathbf{x}}
+\rightarrow \mathbf{z}
+\rightarrow s=\beta_0+\boldsymbol\beta^\top\mathbf{z}
+\rightarrow \hat p=\frac{1}{1+e^{-s}}
+\rightarrow \hat y=\mathbf{1}[\hat p\geq0{,}19].
+\end{equation}
+%--------------------------------------------------------------
+\subsection{Stratification du niveau de risque}
+%--------------------------------------------------------------
+
+Le modèle de régression logistique fournit pour chaque patient une probabilité
+estimée de réhospitalisation à trois mois, notée $\hat p$. Cette probabilité
+constitue l'information quantitative principale produite par le modèle.
+Cependant, dans une application d'aide à la décision, l'affichage d'une
+probabilité seule peut être difficile à interpréter rapidement.
+
+Afin d'améliorer la lisibilité du résultat dans l'interface \textit{CardioRisk AI},
+une stratification en trois niveaux de risque a donc été introduite :
+
+\begin{center}
+\renewcommand{\arraystretch}{1.3}
+\begin{tabular}{@{}c c@{}}
+\toprule
+\textbf{Probabilité prédite} & \textbf{Niveau de risque} \\
+\midrule
+$\hat p < 0{,}20$ & Faible \\
+$0{,}20 \leq \hat p < 0{,}40$ & Modéré \\
+$\hat p \geq 0{,}40$ & Élevé \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+Cette stratification ne modifie pas la probabilité calculée par le modèle.
+Elle constitue uniquement une couche d'interprétation destinée à faciliter
+la lecture du résultat par l'utilisateur.
+
+\subsubsection{Justification des seuils}
+
+Le premier seuil a été fixé à $20\,\%$. Ce choix est cohérent avec la
+distribution de la cible dans la cohorte étudiée : sur les 245 patients,
+52 ont été réhospitalisés dans les trois mois, soit un taux de
+réhospitalisation d'environ $22\,\%$. Une probabilité inférieure à $20\,\%$
+correspond donc à un risque estimé inférieur ou proche du risque de base
+observé dans la population étudiée.
+
+La catégorie \textbf{modérée}, comprise entre $20\,\%$ et $40\,\%$, permet
+d'identifier les patients dont le risque prédit dépasse le niveau moyen
+observé dans la cohorte, sans atteindre un niveau suffisamment élevé pour
+être directement classé comme risque important.
+
+Enfin, une probabilité supérieure ou égale à $40\,\%$ est classée comme
+\textbf{risque élevé}. Cette valeur représente approximativement un risque
+deux fois supérieur au taux de réhospitalisation observé dans la cohorte.
+Elle permet ainsi de mettre visuellement en évidence les patients présentant
+un profil de risque nettement supérieur au niveau de référence.
+
+Cette représentation en trois catégories permet donc de conserver
+l'information probabiliste du modèle tout en fournissant une interprétation
+plus intuitive dans l'interface.
+
+\paragraph{Distinction avec le seuil de classification.}
+
+Il est important de distinguer les seuils utilisés pour l'affichage du niveau
+de risque du seuil de décision du modèle. Le seuil $\tau=0{,}19$ est utilisé
+dans l'évaluation statistique pour transformer la probabilité en une
+classification binaire :
+
+\begin{equation}
+\hat y =
+\begin{cases}
+1, & \text{si } \hat p \geq 0{,}19,\\
+0, & \text{si } \hat p < 0{,}19.
+\end{cases}
+\end{equation}
+
+Les seuils $20\,\%$ et $40\,\%$ ont, quant à eux, principalement un rôle
+d'ergonomie et d'interprétation dans l'application. Ils permettent de
+présenter le résultat sous la forme \textit{faible}, \textit{modéré} ou
+\textit{élevé}, sans modifier le fonctionnement interne du modèle.
+
+Ces catégories constituent une stratification opérationnelle développée
+dans le cadre du prototype. Elles ne doivent pas être interprétées comme
+des seuils cliniques universels et pourront être ajustées lors d'une
+validation ultérieure sur une cohorte indépendante et en concertation avec
+les cliniciens.
+
+Le backend ne reçoit donc pas une classe calculée dans le navigateur : il reçoit les
+données patient, applique le pipeline Python et retourne la probabilité ainsi que la classe
+obtenue. Cette centralisation évite de dupliquer la logique statistique dans le frontend.
+
+L'interprétation des coefficients reste directe. Pour une variable standardisée $z_j$, sa
+contribution au score linéaire est $\beta_jz_j$. Un coefficient positif augmente le logit
+du risque lorsque la variable augmente ; un coefficient négatif le diminue. Cette lecture
+est une association interne au modèle et non une interprétation causale.
+
+\section{Interface web : implémentation et intégration de bout en bout}
+
+Cette partie décrit le passage du notebook/script de machine learning vers une application
+utilisable. Le travail a été réalisé en deux couches principales : un backend FastAPI qui
+encapsule la logique Python et un frontend React qui gère l'interaction utilisateur.
+
+\subsection{Mise en service du backend}
+
+Le backend est lancé avec Uvicorn depuis l'environnement virtuel du projet. Cette étape a
+été importante dans le développement car elle a permis de séparer les problèmes
+d'environnement Python des problèmes du frontend. Une fois l'environnement activé,
+FastAPI charge le modèle sérialisé et expose les fonctions nécessaires à l'interface.
+
+Pour une prédiction, la séquence réalisée côté serveur est la suivante :
+\begin{enumerate}[leftmargin=1.5em]
+ \item réception des données envoyées par l'interface ;
+ \item validation des types et des champs nécessaires ;
+ \item construction de la ligne de données dans le même schéma que lors de l'entraînement ;
+ \item application de l'imputation et du RobustScaler appris sur le train ;
+ \item calcul de $\hat p$ par la régression logistique Ridge ;
+ \item comparaison au seuil $0{,}19$ ;
+ \item retour d'un objet structuré contenant la probabilité, la classe de risque et les
+ informations utiles à l'affichage.
+\end{enumerate}
+
+La logique du modèle reste donc côté Python. React ne calcule jamais directement les
+coefficients ou la probabilité ; il consomme uniquement le résultat fourni par l'API.
+
+\subsubsection{Validation Pydantic et bornes}
+La validation des entrées est assurée par Pydantic, distincte du modèle. Les bornes \texttt{ge}/\texttt{le} évitent les saisies aberrantes sans modifier les coefficients :
+\texttt{espace\_PR} 50--600 ms, \texttt{PAD} 20--200 mmHg, \texttt{Uree} 0,5--600 mmol/L, \texttt{TP} 5--600\%, \texttt{Glycemie} 0,2--10 g/L, \texttt{ProBNP} 0--50000 pg/mL, \texttt{HTAP} 0--2, \texttt{QT\_corrige} libre, \texttt{ProBNP} et \texttt{dose\_de\_lasilix} ($\geq120$ mg $\Rightarrow1$). Ces bornes ont été relâchées pour accepter les valeurs extrêmes observées (ex: 544 ms, 525 mmol/L) tout en signalant les erreurs de frappe.
+
+\subsection{Construction puis refonte du frontend React}
+
+Le frontend a été développé séparément et lancé avec le serveur de développement React.
+Une première version a permis de valider la communication avec le backend. Le design a
+ensuite été retravaillé à partir d'une maquette afin de rendre l'écran plus proche d'un
+outil métier.
+
+La refonte a introduit :
+\begin{itemize}[leftmargin=1.5em]
+ \item une \textbf{sidebar} sombre pour la navigation ;
+ \item une barre supérieure dédiée au médecin et aux notifications ;
+ \item une \textbf{carte patient horizontale} avec les informations essentielles ;
+ \item un tableau de bord en trois zones : \textbf{score IA}, \textbf{facteurs majeurs}
+ et \textbf{alertes} ;
+ \item des recommandations présentées sous forme de cartes compactes ;
+ \item un formulaire distinct pour ajouter ou mettre à jour un patient.
+\end{itemize}
+Après modification, le frontend a été recompilé afin de vérifier l'absence d'erreurs JSX ou
+d'import. Cette étape de build constitue un contrôle simple mais indispensable avant de
+considérer une modification d'interface comme terminée.
+
+\subsection{Du résultat brut à une information interprétable}
+
+Une probabilité seule est peu exploitable. L'interface transforme donc la réponse du
+backend en plusieurs niveaux d'information : probabilité, catégorie de risque, facteurs
+ayant un coefficient non nul et synthèse. Comme le modèle est linéaire après
+standardisation, la contribution d'une variable peut être reliée au terme
+$\beta_j z_j$. Le Ridge conserve ainsi une lecture directe du sens et de l'amplitude
+des coefficients, tout en stabilisant leur estimation par la pénalisation L2.
+
+\subsection{Travail sur le RAG et le LLM local}
+
+Le module génératif a été construit comme une couche séparée du modèle prédictif. Lorsqu'une
+synthèse détaillée est demandée, le backend prépare une requête décrivant le cas, récupère
+des éléments documentaires pertinents avec le mécanisme RAG, puis assemble ces éléments
+avec la prédiction et les données structurées nécessaires. Le prompt obtenu est envoyé au
+LLM exécuté localement via Ollama.
+
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}[node distance=0.95cm and 0.72cm,
+ b/.style={draw,rounded corners,align=center,minimum width=2.5cm,minimum height=0.95cm,fill=gray!7},
+ a/.style={-{Latex[length=2mm]},thick}]
+\node[b] (p) {Données\\patient};
+\node[b, right=of p] (pred) {Prédiction\\Ridge};
+\node[b, right=of pred] (retr) {Contexte\\RAG};
+\node[b, below=of pred] (prompt) {Prompt\\structuré};
+\node[b, right=of prompt] (oll) {LLM local\\Ollama};
+\node[b, right=of oll] (rep) {Synthèse\\contextualisée};
+\draw[a] (p.south) -- (prompt.west);
+\draw[a] (pred.south) -- (prompt.north);
+\draw[a] (retr.south) -- (prompt.east);
+\draw[a] (prompt)--(oll);
+\draw[a] (oll)--(rep);
+\end{tikzpicture}
+\caption{Chaîne de génération : la prédiction statistique est calculée avant et indépendamment du LLM.}
+\label{fig:rag-generation}
+\end{figure}
+
+Cette architecture répond à une règle de conception essentielle : le LLM \textbf{n'est
+pas le classifieur}. Il reformule et contextualise des informations déjà calculées. Si le
+module génératif est indisponible, le score ML reste utilisable.
+
+\subsection{Cohérence visuelle et intégration des captures d'interface}
+
+L'interface constitue la partie visible du travail de modélisation ; sa présentation dans le rapport doit donc refléter fidèlement le modèle final. Afin d'assurer une lecture fluide et cohérente, les captures sont intégrées immédiatement après la description de la fonctionnalité correspondante. Cette organisation évite que LaTeX ne repousse les illustrations plusieurs pages plus loin et garantit que chaque figure illustre directement le paragraphe qui la précède. L'utilisation de \texttt{[H]} pour les captures principales, complétée par \texttt{\string\FloatBarrier}, maintient ainsi une correspondance stricte entre texte et visuel, essentielle pour un rapport professionnel.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=1\textwidth]{dash.png}
+\caption{Tableau de bord principal.}
+\label{fig:web-dashboard}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=1\textwidth]{tape.png}
+\caption{Saisie structurée des informations patient.}
+\label{fig:web-patient}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=1\textwidth]{prediction.png}
+\caption{Restitution de la prédiction et de la synthèse contextualisée .}
+\label{fig:web-report}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=1\textwidth]{patient.png}
+\caption{liste des patients .}
+\label{fig:web-report}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=1\textwidth]{donnee.png}
+\caption{exportation-importation des données.}
+\label{fig:web-report}
+\end{figure}
+\begin{figure}[H]
+\centering
+\includegraphics[width=1\textwidth]{recommandation.png}
+\caption{les recommandations basé sur les données des patients .}
+\label{fig:web-report}
+\end{figure}
+\FloatBarrier
+
+\section{Discussion : cohérence, limites et perspectives}
+
+\subsection{Cohérence entre l'étude expérimentale et le modèle intégré}
+
+La version finale de l'application s'appuie sur la même recette statistique que celle
+décrite dans l'évaluation : 19 variables, imputation médiane, RobustScaler, Ridge
+($C=0{,}05$) et seuil $0{,}19$. Le backend centralise ces opérations afin que l'interface React n'ait
+aucune logique de calcul propre au modèle.
+
+Le choix du Ridge s'inscrit dans la continuité des essais précédents. Le LASSO a
+été utile pour étudier la parcimonie et la sélection de variables, tandis que Random Forest,
+XGBoost, TabPFN, SVM, LightGBM et les ensembles ont permis d'explorer des relations plus
+complexes. La configuration Ridge finale conserve l'interprétabilité d'une régression
+logistique tout en stabilisant les coefficients par la pénalisation L2 et en intégrant les variables \texttt{dose\_de\_lasilix}, \texttt{ProBNP}, \texttt{ARM} et \texttt{QT\_corrige} parmi les facteurs prédictifs.\subsection{Limites statistiques et validation}
+
+
+Les prochaines étapes statistiques sont l'évaluation sur une cohorte indépendante,
+l'estimation d'intervalles de confiance, l'étude de la calibration des probabilités et
+l'analyse détaillée des faux négatifs et faux positifs. Ces éléments sont plus importants
+que la recherche d'un gain ponctuel sur le même jeu de données.
+
+\subsection{Limites du module génératif}
+
+Le RAG améliore l'ancrage documentaire mais ne garantit pas l'absence d'erreurs du LLM.
+Le rapport généré doit donc être considéré comme une aide à la synthèse. Une version plus
+mature devrait afficher les sources récupérées, versionner les ressources documentaires, conserver le prompt
+et la réponse dans un journal d'audit, et mettre en place des tests de non-régression sur
+un jeu de scénarios cliniques validés.
+
+\subsection{Perspectives d'industrialisation}
+
+Les évolutions prioritaires sont : validation externe multicentrique, authentification
+robuste, base de données relationnelle, chiffrement, traçabilité des versions du modèle,
+monitoring de dérive des données, ajout d'explications locales robustes et évaluation
+formelle du module RAG/LLM. Ces étapes sont nécessaires pour passer d'un prototype de
+recherche à un outil clinique exploitable dans un environnement réglementé.
+
+
+%==============================================================
+\chapter*{Conclusion générale}
+\addcontentsline{toc}{chapter}{Conclusion générale}
+%==============================================================
+
+Ce stage a permis de réaliser un prototype complet d'aide à la décision pour la
+prédiction de la réhospitalisation à trois mois dans l'insuffisance cardiaque. Le travail a
+couvert la préparation d'une base clinique réelle, la prévention des fuites d'information,
+la réduction de dimension, l'étude de plusieurs familles de classifieurs et la construction
+d'une configuration finale de régression logistique Ridge. La configuration retenue (19 vars, $C=0{,}05$, avec les variables \texttt{dose\_de\_lasilix}, \texttt{ProBNP}, \texttt{ARM} et \texttt{QT\_corrige}) obtient une AUC de $0{,}789$, une sensibilité de $72{,}7\%$ et une spécificité de
+$72{,}5\%$ au seuil $0{,}19$ (29 VN, 11 FP, 3 FN, 8 VP). Le compromis $73/73$ est le plus proche de $80/80$ avec 11 positifs. Ces performances mettent en évidence le
+potentiel de l'approche, tout en nécessitant une validation sur une cohorte indépendante
+avant toute conclusion sur la généralisation.
+
+Au-delà de la partie machine learning, CardioRisk AI propose une architecture logicielle
+cohérente fondée sur FastAPI (validation Pydantic relâchée : \texttt{espace\_PR} 50--600, \texttt{Uree} 0,5--600, \texttt{TP} 5--600, \texttt{HTAP} 0--2, etc.) et React (carte héros \texttt{FEVG}/\texttt{creat} remplacée par \texttt{ProBNP}/\texttt{HTAP}). L'ajout d'un système RAG et d'un LLM local via
+Ollama permet de transformer les données structurées, le score du modèle et un contexte
+documentaire en une synthèse lisible par le clinicien. Cette couche générative reste
+volontairement séparée du calcul du risque afin de préserver la traçabilité du modèle
+statistique.
+
+Les résultats obtenus montrent l'intérêt de l'approche, mais ils doivent être interprétés
+à la lumière de la taille limitée de la cohorte et de l'absence de validation externe.
+Les prochaines étapes sont la validation multicentrique, l'étude de la calibration,
+l'estimation d'intervalles de confiance, le renforcement de la sécurité applicative et
+l'évaluation systématique de la qualité du RAG et du LLM. Le système doit rester un
+\textbf{outil d'aide à la décision avec validation médicale humaine}, et non un dispositif
+autonome de prescription.
+
+
+\chapter*{Références bibliographiques}
+\addcontentsline{toc}{chapter}{Références bibliographiques}
+\begin{thebibliography}{9}
+\bibitem{hosmer}
+D. W. Hosmer, S. Lemeshow et R. X. Sturdivant,
+\emph{Applied Logistic Regression}, Wiley, 3e éd., 2013.
+
+\bibitem{breiman}
+L. Breiman, ``Random Forests'', \emph{Machine Learning}, vol. 45, pp. 5--32, 2001.
+
+\bibitem{xgboost}
+T. Chen et C. Guestrin, ``XGBoost: A Scalable Tree Boosting System'',
+\emph{Proceedings of KDD}, 2016.
+
+\bibitem{transformer}
+A. Vaswani et al., ``Attention Is All You Need'', \emph{NeurIPS}, 2017.
+
+\bibitem{rag}
+P. Lewis et al., ``Retrieval-Augmented Generation for Knowledge-Intensive NLP Tasks'',
+\emph{NeurIPS}, 2020.
+
+\bibitem{sbert}
+N. Reimers et I. Gurevych, ``Sentence-BERT: Sentence Embeddings using Siamese BERT-Networks'',
+\emph{EMNLP-IJCNLP}, 2019.
+\end{thebibliography}
+
+\end{document}

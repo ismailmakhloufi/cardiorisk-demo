@@ -1,0 +1,1877 @@
+[
+  {
+    "id": 1,
+    "date_naissance": "",
+    "sexe": "",
+    "date_consultation": "2026-07-27",
+    "variables": {
+      "cause_valvulaire": 0,
+      "PAS": 91.0,
+      "OG": 50.0,
+      "ATCD_d_hospitalisation": 1,
+      "dose_de_lasilix": 40.0,
+      "IMC": 22.87,
+      "IEC_dose": 12.5,
+      "FQ_ECG_sortie": 72.0,
+      "TG": 1.2,
+      "Hb": 10.5,
+      "lymphocyte": 0.8,
+      "duree_hospitalisation_jour": 2.0,
+      "FEVG": 38.0,
+      "creat": 130.0,
+      "cause_ischémique": 1,
+      "QT_corrige": 519.0
+    },
+    "resultat": {
+      "proba": 0.30521072767701823,
+      "score_percent": 30.5,
+      "risk_level": "modere",
+      "technical_class": "a risque"
+    }
+  },
+  {
+    "id": 2,
+    "date_naissance": "2004-01-10",
+    "sexe": "M",
+    "date_consultation": "2026-07-27",
+    "variables": {
+      "cause_valvulaire": 0,
+      "PAS": 90.0,
+      "OG": 70.0,
+      "ATCD_d_hospitalisation": 0,
+      "dose_de_lasilix": 35.0,
+      "IMC": 22.87,
+      "IEC_dose": 12.5,
+      "FQ_ECG_sortie": 80.0,
+      "TG": 0.8,
+      "Hb": 10.5,
+      "lymphocyte": 0.8,
+      "duree_hospitalisation_jour": 0.0,
+      "FEVG": 38.0,
+      "creat": 130.0,
+      "cause_ischémique": 1,
+      "QT_corrige": 430.0
+    },
+    "resultat": {
+      "proba": 0.3749269931948725,
+      "score_percent": 37.5,
+      "risk_level": "modere",
+      "technical_class": "a risque"
+    }
+  },
+  {
+    "id": 3,
+    "date_naissance": "2004-01-10",
+    "sexe": "M",
+    "date_consultation": "2026-07-27",
+    "variables": {
+      "cause_valvulaire": 0,
+      "PAS": 120.0,
+      "OG": 19.0,
+      "ATCD_d_hospitalisation": 0,
+      "dose_de_lasilix": 35.0,
+      "IMC": 22.87,
+      "IEC_dose": 12.5,
+      "FQ_ECG_sortie": 80.0,
+      "TG": 0.8,
+      "Hb": 12.0,
+      "lymphocyte": 0.8,
+      "duree_hospitalisation_jour": 0.0,
+      "FEVG": 38.0,
+      "creat": 70.0,
+      "cause_ischémique": 1,
+      "QT_corrige": 430.0
+    },
+    "resultat": {
+      "proba": 0.17839204823125787,
+      "score_percent": 17.8,
+      "risk_level": "faible",
+      "technical_class": "faible risque"
+    }
+  },
+  {
+    "id": 4,
+    "date_naissance": "2004-01-10",
+    "sexe": "M",
+    "date_consultation": "2026-07-27",
+    "variables": {
+      "cause_valvulaire": 1,
+      "PAS": 70.0,
+      "OG": 88.0,
+      "ATCD_d_hospitalisation": 2,
+      "dose_de_lasilix": 50.0,
+      "IMC": 22.87,
+      "IEC_dose": 6.0,
+      "FQ_ECG_sortie": 69.0,
+      "TG": 0.8,
+      "Hb": 10.0,
+      "lymphocyte": -1.2,
+      "duree_hospitalisation_jour": 20.0,
+      "FEVG": 38.0,
+      "creat": 130.0,
+      "cause_ischémique": 1,
+      "QT_corrige": 520.0
+    },
+    "resultat": {
+      "proba": 0.5467709106007931,
+      "score_percent": 54.7,
+      "risk_level": "eleve",
+      "technical_class": "a risque"
+    }
+  },
+  {
+    "id": 5,
+    "date_naissance": "",
+    "sexe": "",
+    "date_consultation": "2026-07-27",
+    "variables": {
+      "cause_valvulaire": 0,
+      "PAS": 91.0,
+      "OG": 50.0,
+      "ATCD_d_hospitalisation": 1,
+      "dose_de_lasilix": 40.0,
+      "IMC": 22.87,
+      "IEC_dose": 12.5,
+      "FQ_ECG_sortie": 72.0,
+      "TG": 1.2,
+      "Hb": 10.5,
+      "lymphocyte": 0.8,
+      "duree_hospitalisation_jour": 2.0,
+      "FEVG": 38.0,
+      "creat": 130.0,
+      "cause_ischémique": 1,
+      "QT_corrige": 519.0
+    },
+    "resultat": {
+      "proba": 0.30521072767701823,
+      "score_percent": 30.5,
+      "risk_level": "modere",
+      "technical_class": "a risque"
+    }
+  },
+  {
+    "id": 6,
+    "date_naissance": "2001-01-02",
+    "sexe": "F",
+    "date_consultation": "2026-07-27",
+    "variables": {
+      "cause_valvulaire": 1,
+      "PAS": 70.0,
+      "OG": 67.0,
+      "ATCD_d_hospitalisation": 1,
+      "dose_de_lasilix": 250.0,
+      "IMC": 22.87,
+      "IEC_dose": 12.5,
+      "FQ_ECG_sortie": 72.0,
+      "TG": 1.0,
+      "Hb": 10.5,
+      "lymphocyte": 2530.0,
+      "duree_hospitalisation_jour": 20.0,
+      "FEVG": 38.0,
+      "creat": 130.0,
+      "cause_ischémique": 0,
+      "QT_corrige": 519.0
+    },
+    "resultat": {
+      "proba": 0.4910018408647341,
+      "score_percent": 49.1,
+      "risk_level": "eleve",
+      "technical_class": "a risque"
+    }
+  },
+  {
+    "id": 7,
+    "date_naissance": "2001-01-02",
+    "sexe": "F",
+    "date_consultation": "2026-07-27",
+    "variables": {
+      "cause_valvulaire": 1,
+      "PAS": 70.0,
+      "OG": 80.0,
+      "ATCD_d_hospitalisation": 3,
+      "dose_de_lasilix": 250.0,
+      "IMC": 20.0,
+      "IEC_dose": 12.5,
+      "FQ_ECG_sortie": 85.0,
+      "TG": 1.0,
+      "Hb": 10.5,
+      "lymphocyte": 1340.0,
+      "duree_hospitalisation_jour": 20.0,
+      "FEVG": 30.0,
+      "creat": 130.0,
+      "cause_ischémique": 0,
+      "QT_corrige": 519.0
+    },
+    "resultat": {
+      "proba": 0.6399290919391224,
+      "score_percent": 64.0,
+      "risk_level": "eleve",
+      "technical_class": "a risque"
+    }
+  },
+  {
+    "id": 8,
+    "date_naissance": "",
+    "sexe": "",
+    "date_consultation": "2026-07-28",
+    "variables": {
+      "cause_valvulaire": 0,
+      "PAS": 91.0,
+      "OG": 50.0,
+      "ATCD_d_hospitalisation": 1,
+      "dose_de_lasilix": 40.0,
+      "IMC": 22.87,
+      "IEC_dose": 12.5,
+      "FQ_ECG_sortie": 72.0,
+      "TG": 1.2,
+      "Hb": 10.5,
+      "lymphocyte": 0.8,
+      "duree_hospitalisation_jour": 2.0,
+      "FEVG": 38.0,
+      "creat": 130.0,
+      "cause_ischémique": 1,
+      "QT_corrige": 519.0
+    },
+    "resultat": {
+      "proba": 0.30521072767701823,
+      "score_percent": 30.5,
+      "risk_level": "modere",
+      "technical_class": "a risque"
+    }
+  },
+  {
+    "id": 9,
+    "doctor_id": "dr-bahloul-amine",
+    "nom": "ismail",
+    "prenom": "makhloufi",
+    "date_naissance": "2004-02-10",
+    "sexe": "M",
+    "created_at": "2026-07-28",
+    "consultations": [
+      {
+        "date_consultation": "2026-07-28T01:58:31",
+        "variables": {
+          "cause_valvulaire": 0,
+          "PAS": 91.0,
+          "OG": 50.0,
+          "ATCD_d_hospitalisation": 0,
+          "dose_de_lasilix": 40.0,
+          "IMC": 22.87,
+          "IEC_dose": 12.5,
+          "FQ_ECG_sortie": 72.0,
+          "TG": 1.2,
+          "Hb": 10.5,
+          "lymphocyte": 0.8,
+          "duree_hospitalisation_jour": 0.0,
+          "FEVG": 38.0,
+          "creat": 70.0,
+          "cause_ischémique": 1,
+          "QT_corrige": 400.0
+        },
+        "resultat": {
+          "proba": 0.2667954289084482,
+          "score_percent": 26.7,
+          "risk_level": "modere",
+          "technical_class": "a risque"
+        }
+      },
+      {
+        "date_consultation": "2026-07-28T01:59:40",
+        "variables": {
+          "cause_valvulaire": 0,
+          "PAS": 91.0,
+          "OG": 50.0,
+          "ATCD_d_hospitalisation": 0,
+          "dose_de_lasilix": 40.0,
+          "IMC": 22.87,
+          "IEC_dose": 12.5,
+          "FQ_ECG_sortie": 72.0,
+          "TG": 1.2,
+          "Hb": 10.5,
+          "lymphocyte": 0.8,
+          "duree_hospitalisation_jour": 0.0,
+          "FEVG": 38.0,
+          "creat": 70.0,
+          "cause_ischémique": 1,
+          "QT_corrige": 400.0
+        },
+        "resultat": {
+          "proba": 0.2667954289084482,
+          "score_percent": 26.7,
+          "risk_level": "modere",
+          "technical_class": "a risque"
+        }
+      },
+      {
+        "date_consultation": "2026-07-28T02:13:02",
+        "variables": {
+          "cause_valvulaire": 1,
+          "PAS": 91.0,
+          "OG": 90.0,
+          "ATCD_d_hospitalisation": 1,
+          "dose_de_lasilix": 80.0,
+          "IMC": 22.87,
+          "IEC_dose": 12.5,
+          "FQ_ECG_sortie": 72.0,
+          "TG": 1.2,
+          "Hb": 10.5,
+          "lymphocyte": 0.8,
+          "duree_hospitalisation_jour": 20.0,
+          "FEVG": 38.0,
+          "creat": 130.0,
+          "cause_ischémique": 1,
+          "QT_corrige": 517.0
+        },
+        "resultat": {
+          "proba": 0.5083223064595155,
+          "score_percent": 50.8,
+          "risk_level": "eleve",
+          "technical_class": "a risque"
+        }
+      }
+    ],
+    "last_result": {
+      "proba": 0.5083223064595155,
+      "score_percent": 50.8,
+      "risk_level": "eleve",
+      "technical_class": "a risque"
+    },
+    "last_consultation": "2026-07-28T02:13:02"
+  },
+  {
+    "id": 10,
+    "doctor_id": "dr-bahloul-amine",
+    "nom": "kmar ",
+    "prenom": "amouri",
+    "date_naissance": "2004-03-06",
+    "sexe": "F",
+    "created_at": "2026-07-30",
+    "consultations": [
+      {
+        "date_consultation": "2026-07-30T23:19:54",
+        "variables": {
+          "cause_valvulaire": 0,
+          "PAS": 100.0,
+          "OG": 80.0,
+          "ATCD_d_hospitalisation": 0,
+          "dose_de_lasilix": 30.0,
+          "IMC": 22.0,
+          "IEC_dose": 14.0,
+          "FQ_ECG_sortie": 82.0,
+          "TG": 1.2,
+          "Hb": 15.0,
+          "lymphocyte": 20.0,
+          "duree_hospitalisation_jour": 0.0,
+          "FEVG": 38.0,
+          "creat": 90.0,
+          "cause_ischémique": 1,
+          "QT_corrige": 410.0
+        },
+        "resultat": {
+          "proba": 0.3825805844260359,
+          "score_percent": 38.3,
+          "risk_level": "modere",
+          "technical_class": "a risque"
+        }
+      }
+    ],
+    "last_result": {
+      "proba": 0.3825805844260359,
+      "score_percent": 38.3,
+      "risk_level": "modere",
+      "technical_class": "a risque"
+    },
+    "last_consultation": "2026-07-30T23:19:54"
+  },
+  {
+    "id": 11,
+    "doctor_id": "dramouri-kmar",
+    "nom": "omar",
+    "prenom": "ffff",
+    "date_naissance": "2004-10-12",
+    "sexe": "M",
+    "created_at": "2026-07-30",
+    "consultations": [
+      {
+        "date_consultation": "2026-07-30T23:28:18",
+        "variables": {
+          "cause_valvulaire": 0,
+          "PAS": 20.0,
+          "OG": 90.0,
+          "ATCD_d_hospitalisation": 0,
+          "dose_de_lasilix": 40.0,
+          "IMC": 19.0,
+          "IEC_dose": 14.0,
+          "FQ_ECG_sortie": 80.0,
+          "TG": 1.2,
+          "Hb": 15.0,
+          "lymphocyte": 100.0,
+          "duree_hospitalisation_jour": 0.0,
+          "FEVG": 39.0,
+          "creat": 130.0,
+          "cause_ischémique": 0,
+          "QT_corrige": 376.0
+        },
+        "resultat": {
+          "proba": 0.516224449145036,
+          "score_percent": 51.6,
+          "risk_level": "eleve",
+          "technical_class": "a risque"
+        }
+      }
+    ],
+    "last_result": {
+      "proba": 0.516224449145036,
+      "score_percent": 51.6,
+      "risk_level": "eleve",
+      "technical_class": "a risque"
+    },
+    "last_consultation": "2026-07-30T23:28:18"
+  },
+  {
+    "id": 12,
+    "doctor_id": "dr-ismail-makhloufi",
+    "nom": "x",
+    "prenom": "y",
+    "date_naissance": "2004-01-02",
+    "sexe": "M",
+    "created_at": "2026-07-31",
+    "consultations": [
+      {
+        "date_consultation": "2026-07-31T20:35:27",
+        "variables": {
+          "cause_valvulaire": 0,
+          "PAS": 100.0,
+          "OG": 100.0,
+          "ATCD_d_hospitalisation": 0,
+          "dose_de_lasilix": 12.0,
+          "IMC": 20.0,
+          "IEC_dose": 10.0,
+          "FQ_ECG_sortie": 79.0,
+          "TG": 0.9,
+          "Hb": 15.0,
+          "lymphocyte": 1.0,
+          "duree_hospitalisation_jour": 0.0,
+          "FEVG": 39.0,
+          "creat": 90.0,
+          "cause_ischémique": 1,
+          "QT_corrige": 410.0
+        },
+        "resultat": {
+          "proba": 0.47331622685430796,
+          "score_percent": 47.3,
+          "risk_level": "eleve",
+          "technical_class": "a risque"
+        }
+      },
+      {
+        "date_consultation": "2026-07-31T20:38:30",
+        "variables": {
+          "cause_valvulaire": 0,
+          "PAS": 100.0,
+          "OG": 100.0,
+          "ATCD_d_hospitalisation": 0,
+          "dose_de_lasilix": 12.0,
+          "IMC": 20.0,
+          "IEC_dose": 10.0,
+          "FQ_ECG_sortie": 79.0,
+          "TG": 0.9,
+          "Hb": 15.0,
+          "lymphocyte": 1.0,
+          "duree_hospitalisation_jour": 0.0,
+          "FEVG": 39.0,
+          "creat": 90.0,
+          "cause_ischémique": 1,
+          "QT_corrige": 410.0
+        },
+        "resultat": {
+          "proba": 0.47331622685430796,
+          "score_percent": 47.3,
+          "risk_level": "eleve",
+          "technical_class": "a risque"
+        }
+      },
+      {
+        "date_consultation": "2026-07-31T20:42:05",
+        "variables": {
+          "cause_valvulaire": 0,
+          "PAS": 100.0,
+          "OG": 100.0,
+          "ATCD_d_hospitalisation": 0,
+          "dose_de_lasilix": 12.0,
+          "IMC": 20.0,
+          "IEC_dose": 10.0,
+          "FQ_ECG_sortie": 79.0,
+          "TG": 0.9,
+          "Hb": 15.0,
+          "lymphocyte": 1.0,
+          "duree_hospitalisation_jour": 0.0,
+          "FEVG": 39.0,
+          "creat": 90.0,
+          "cause_ischémique": 1,
+          "QT_corrige": 410.0
+        },
+        "resultat": {
+          "proba": 0.47331622685430796,
+          "score_percent": 47.3,
+          "risk_level": "eleve",
+          "technical_class": "a risque"
+        }
+      },
+      {
+        "date_consultation": "2026-08-01T21:18:07",
+        "variables": {
+          "cause_valvulaire": 0,
+          "PAS": 100.0,
+          "OG": 100.0,
+          "ATCD_d_hospitalisation": 0,
+          "dose_de_lasilix": 12.0,
+          "IMC": 20.0,
+          "IEC_dose": 10.0,
+          "FQ_ECG_sortie": 79.0,
+          "TG": 0.9,
+          "Hb": 15.0,
+          "lymphocyte": 1.0,
+          "duree_hospitalisation_jour": 0.0,
+          "FEVG": 39.0,
+          "creat": 90.0,
+          "cause_ischémique": 1,
+          "QT_corrige": 410.0
+        },
+        "resultat": {
+          "proba": 0.47331622685430796,
+          "score_percent": 47.3,
+          "risk_level": "eleve",
+          "technical_class": "a risque"
+        }
+      }
+    ],
+    "last_result": {
+      "proba": 0.47331622685430796,
+      "score_percent": 47.3,
+      "risk_level": "eleve",
+      "technical_class": "a risque"
+    },
+    "last_consultation": "2026-08-01T21:18:07"
+  },
+  {
+    "id": 13,
+    "doctor_id": "dr-ismail-makhloufi",
+    "nom": "ismail",
+    "prenom": "makhloufi",
+    "date_naissance": "2004-01-10",
+    "sexe": "M",
+    "created_at": "2026-08-01",
+    "consultations": [
+      {
+        "date_consultation": "2026-08-01T21:29:14",
+        "variables": {
+          "cause_valvulaire": 0,
+          "PAS": 90.0,
+          "OG": 85.0,
+          "ATCD_d_hospitalisation": 0,
+          "dose_de_lasilix": 12.0,
+          "IMC": 20.0,
+          "IEC_dose": 12.0,
+          "FQ_ECG_sortie": 80.0,
+          "TG": 0.9,
+          "Hb": 15.0,
+          "lymphocyte": 1.0,
+          "duree_hospitalisation_jour": 0.0,
+          "FEVG": 39.0,
+          "creat": 90.0,
+          "cause_ischémique": 0,
+          "QT_corrige": 400.0
+        },
+        "resultat": {
+          "proba": 0.43393516284058803,
+          "score_percent": 43.4,
+          "risk_level": "eleve",
+          "technical_class": "a risque"
+        }
+      }
+    ],
+    "last_result": {
+      "proba": 0.43393516284058803,
+      "score_percent": 43.4,
+      "risk_level": "eleve",
+      "technical_class": "a risque"
+    },
+    "last_consultation": "2026-08-01T21:29:14"
+  },
+  {
+    "id": 14,
+    "doctor_id": "dr-ismail-makhloufi",
+    "nom": "a",
+    "prenom": "b",
+    "date_naissance": "2004-02-10",
+    "sexe": "M",
+    "created_at": "2026-08-02",
+    "consultations": [
+      {
+        "date_consultation": "2026-08-02T17:05:04",
+        "variables": {
+          "cause_valvulaire": 0,
+          "PAS": 100.0,
+          "OG": 100.0,
+          "ATCD_d_hospitalisation": 0,
+          "dose_de_lasilix": 12.0,
+          "IMC": 20.0,
+          "IEC_dose": 14.0,
+          "FQ_ECG_sortie": 72.0,
+          "TG": 0.9,
+          "Hb": 15.0,
+          "lymphocyte": 0.9,
+          "duree_hospitalisation_jour": 0.0,
+          "FEVG": 39.0,
+          "creat": 100.0,
+          "cause_ischémique": 1,
+          "QT_corrige": 400.0
+        },
+        "resultat": {
+          "proba": 0.46426429271613634,
+          "score_percent": 46.4,
+          "risk_level": "eleve",
+          "technical_class": "a risque"
+        }
+      }
+    ],
+    "last_result": {
+      "proba": 0.46426429271613634,
+      "score_percent": 46.4,
+      "risk_level": "eleve",
+      "technical_class": "a risque"
+    },
+    "last_consultation": "2026-08-02T17:05:04"
+  },
+  {
+    "id": 15,
+    "doctor_id": "dr-ismail-makhloufi",
+    "nom": "sjs",
+    "prenom": "sjjs",
+    "date_naissance": "2004-01-01",
+    "sexe": "F",
+    "created_at": "2026-08-14",
+    "consultations": [
+      {
+        "date_consultation": "2026-08-14T20:31:15",
+        "variables": {
+          "cause_valvulaire": 1,
+          "PAS": 120.0,
+          "OG": 130.0,
+          "ATCD_d_hospitalisation": 2,
+          "dose_de_lasilix": 20.0,
+          "IMC": 25.0,
+          "IEC_dose": 16.0,
+          "FQ_ECG_sortie": 70.0,
+          "TG": 0.9,
+          "Hb": 10.0,
+          "lymphocyte": 2640.0,
+          "duree_hospitalisation_jour": 15.0,
+          "FEVG": 30.0,
+          "creat": 130.0,
+          "cause_ischémique": 0,
+          "QT_corrige": 530.0
+        },
+        "resultat": {
+          "proba": 0.6365491697771921,
+          "score_percent": 63.7,
+          "risk_level": "eleve",
+          "technical_class": "a risque"
+        }
+      }
+    ],
+    "last_result": {
+      "proba": 0.6365491697771921,
+      "score_percent": 63.7,
+      "risk_level": "eleve",
+      "technical_class": "a risque"
+    },
+    "last_consultation": "2026-08-14T20:31:15"
+  },
+  {
+    "id": 16,
+    "doctor_id": "dr-bahloul-ramzi",
+    "nom": "ben hassen",
+    "prenom": "omar",
+    "date_naissance": "1950-01-10",
+    "sexe": "M",
+    "created_at": "2026-09-01",
+    "consultations": [
+      {
+        "date_consultation": "2026-09-01T02:14:06",
+        "variables": {
+          "cause_valvulaire": 1,
+          "PAS": 100.0,
+          "OG": 90.0,
+          "ATCD_d_hospitalisation": 2,
+          "dose_de_lasilix": 15.0,
+          "IMC": 24.0,
+          "IEC_dose": 16.0,
+          "FQ_ECG_sortie": 30.0,
+          "TG": 1.2,
+          "Hb": 7.0,
+          "lymphocyte": 10.0,
+          "duree_hospitalisation_jour": 20.0,
+          "FEVG": 50.0,
+          "creat": 100.0,
+          "cause_ischémique": 0,
+          "QT_corrige": 512.0
+        },
+        "resultat": {
+          "proba": 0.44848051196761657,
+          "score_percent": 44.8,
+          "risk_level": "eleve",
+          "technical_class": "a risque"
+        }
+      },
+      {
+        "date_consultation": "2026-09-01T02:19:51",
+        "variables": {
+          "cause_valvulaire": 1,
+          "PAS": 100.0,
+          "OG": 90.0,
+          "ATCD_d_hospitalisation": 2,
+          "dose_de_lasilix": 15.0,
+          "IMC": 24.0,
+          "IEC_dose": 16.0,
+          "FQ_ECG_sortie": 30.0,
+          "TG": 1.2,
+          "Hb": 7.0,
+          "lymphocyte": 10.0,
+          "duree_hospitalisation_jour": 20.0,
+          "FEVG": 50.0,
+          "creat": 100.0,
+          "cause_ischémique": 0,
+          "QT_corrige": 512.0,
+          "lasilix": 1,
+          "betabloquants": 0,
+          "plavix_cardiocine": 0,
+          "sintrome_aod": 0,
+          "plavix": 0,
+          "cardiocine100": 0,
+          "sintrom": 0,
+          "AOD": 0,
+          "ARM": 0,
+          "INH_SGLT2": 0,
+          "Ivabradine": 0
+        },
+        "resultat": {
+          "proba": 0.44848051196761657,
+          "score_percent": 44.8,
+          "risk_level": "eleve",
+          "technical_class": "a risque"
+        }
+      },
+      {
+        "date_consultation": "2026-09-01T20:42:09",
+        "variables": {
+          "cause_valvulaire": 1,
+          "PAS": 100.0,
+          "OG": 40.0,
+          "ATCD_d_hospitalisation": 2,
+          "dose_de_lasilix": 40.0,
+          "IMC": 24.0,
+          "IEC_dose": 10.0,
+          "FQ_ECG_sortie": 60.0,
+          "TG": 1.2,
+          "Hb": 7.0,
+          "lymphocyte": 10.0,
+          "duree_hospitalisation_jour": 20.0,
+          "FEVG": 35.0,
+          "creat": 100.0,
+          "cause_ischémique": 0,
+          "QT_corrige": 475.0,
+          "lasilix": 1,
+          "betabloquants": 0,
+          "plavix_cardiocine": 0,
+          "sintrome_aod": 0,
+          "plavix": 0,
+          "cardiocine100": 0,
+          "sintrom": 0,
+          "AOD": 0,
+          "ARM": 0,
+          "INH_SGLT2": 0,
+          "Ivabradine": 0
+        },
+        "resultat": {
+          "proba": 0.3062619952305348,
+          "score_percent": 30.6,
+          "risk_level": "modere",
+          "technical_class": "a risque"
+        }
+      },
+      {
+        "date_consultation": "2026-09-01T20:42:23",
+        "variables": {
+          "cause_valvulaire": 1,
+          "PAS": 100.0,
+          "OG": 40.0,
+          "ATCD_d_hospitalisation": 2,
+          "dose_de_lasilix": 40.0,
+          "IMC": 24.0,
+          "IEC_dose": 10.0,
+          "FQ_ECG_sortie": 60.0,
+          "TG": 1.2,
+          "Hb": 7.0,
+          "lymphocyte": 10.0,
+          "duree_hospitalisation_jour": 20.0,
+          "FEVG": 35.0,
+          "creat": 100.0,
+          "cause_ischémique": 0,
+          "QT_corrige": 475.0,
+          "lasilix": 1,
+          "betabloquants": 0,
+          "plavix_cardiocine": 0,
+          "sintrome_aod": 0,
+          "plavix": 0,
+          "cardiocine100": 0,
+          "sintrom": 0,
+          "AOD": 0,
+          "ARM": 0,
+          "INH_SGLT2": 0,
+          "Ivabradine": 0
+        },
+        "resultat": {
+          "proba": 0.3062619952305348,
+          "score_percent": 30.6,
+          "risk_level": "modere",
+          "technical_class": "a risque"
+        }
+      },
+      {
+        "date_consultation": "2026-09-01T20:43:40",
+        "variables": {
+          "cause_valvulaire": 1,
+          "PAS": 80.0,
+          "OG": 40.0,
+          "ATCD_d_hospitalisation": 2,
+          "dose_de_lasilix": 250.0,
+          "IMC": 35.0,
+          "IEC_dose": 10.0,
+          "FQ_ECG_sortie": 90.0,
+          "TG": 2.0,
+          "Hb": 9.0,
+          "lymphocyte": 1000.0,
+          "duree_hospitalisation_jour": 10.0,
+          "FEVG": 15.0,
+          "creat": 160.0,
+          "cause_ischémique": 0,
+          "QT_corrige": 475.0,
+          "lasilix": 1,
+          "betabloquants": 0,
+          "plavix_cardiocine": 0,
+          "sintrome_aod": 0,
+          "plavix": 0,
+          "cardiocine100": 0,
+          "sintrom": 0,
+          "AOD": 0,
+          "ARM": 0,
+          "INH_SGLT2": 0,
+          "Ivabradine": 0
+        },
+        "resultat": {
+          "proba": 0.3904117482478134,
+          "score_percent": 39.0,
+          "risk_level": "modere",
+          "technical_class": "a risque"
+        }
+      },
+      {
+        "date_consultation": "2026-09-01T20:43:51",
+        "variables": {
+          "cause_valvulaire": 1,
+          "PAS": 80.0,
+          "OG": 40.0,
+          "ATCD_d_hospitalisation": 2,
+          "dose_de_lasilix": 250.0,
+          "IMC": 35.0,
+          "IEC_dose": 10.0,
+          "FQ_ECG_sortie": 100.0,
+          "TG": 2.0,
+          "Hb": 9.0,
+          "lymphocyte": 1000.0,
+          "duree_hospitalisation_jour": 10.0,
+          "FEVG": 15.0,
+          "creat": 160.0,
+          "cause_ischémique": 0,
+          "QT_corrige": 475.0,
+          "lasilix": 1,
+          "betabloquants": 0,
+          "plavix_cardiocine": 0,
+          "sintrome_aod": 0,
+          "plavix": 0,
+          "cardiocine100": 0,
+          "sintrom": 0,
+          "AOD": 0,
+          "ARM": 0,
+          "INH_SGLT2": 0,
+          "Ivabradine": 0
+        },
+        "resultat": {
+          "proba": 0.4019318749189212,
+          "score_percent": 40.2,
+          "risk_level": "eleve",
+          "technical_class": "a risque"
+        }
+      },
+      {
+        "date_consultation": "2026-09-01T20:44:01",
+        "variables": {
+          "cause_valvulaire": 1,
+          "PAS": 80.0,
+          "OG": 40.0,
+          "ATCD_d_hospitalisation": 2,
+          "dose_de_lasilix": 250.0,
+          "IMC": 35.0,
+          "IEC_dose": 10.0,
+          "FQ_ECG_sortie": 65.0,
+          "TG": 2.0,
+          "Hb": 9.0,
+          "lymphocyte": 1000.0,
+          "duree_hospitalisation_jour": 10.0,
+          "FEVG": 15.0,
+          "creat": 160.0,
+          "cause_ischémique": 0,
+          "QT_corrige": 475.0,
+          "lasilix": 1,
+          "betabloquants": 0,
+          "plavix_cardiocine": 0,
+          "sintrome_aod": 0,
+          "plavix": 0,
+          "cardiocine100": 0,
+          "sintrom": 0,
+          "AOD": 0,
+          "ARM": 0,
+          "INH_SGLT2": 0,
+          "Ivabradine": 0
+        },
+        "resultat": {
+          "proba": 0.3621646817372383,
+          "score_percent": 36.2,
+          "risk_level": "modere",
+          "technical_class": "a risque"
+        }
+      },
+      {
+        "date_consultation": "2026-09-01T20:44:19",
+        "variables": {
+          "cause_valvulaire": 0,
+          "PAS": 80.0,
+          "OG": 40.0,
+          "ATCD_d_hospitalisation": 2,
+          "dose_de_lasilix": 250.0,
+          "IMC": 35.0,
+          "IEC_dose": 10.0,
+          "FQ_ECG_sortie": 65.0,
+          "TG": 2.0,
+          "Hb": 9.0,
+          "lymphocyte": 1000.0,
+          "duree_hospitalisation_jour": 10.0,
+          "FEVG": 15.0,
+          "creat": 160.0,
+          "cause_ischémique": 1,
+          "QT_corrige": 475.0,
+          "lasilix": 1,
+          "betabloquants": 0,
+          "plavix_cardiocine": 0,
+          "sintrome_aod": 0,
+          "plavix": 0,
+          "cardiocine100": 0,
+          "sintrom": 0,
+          "AOD": 0,
+          "ARM": 0,
+          "INH_SGLT2": 0,
+          "Ivabradine": 0
+        },
+        "resultat": {
+          "proba": 0.3265026054940504,
+          "score_percent": 32.7,
+          "risk_level": "modere",
+          "technical_class": "a risque"
+        }
+      },
+      {
+        "date_consultation": "2026-09-01T20:44:30",
+        "variables": {
+          "cause_valvulaire": 0,
+          "PAS": 80.0,
+          "OG": 30.0,
+          "ATCD_d_hospitalisation": 2,
+          "dose_de_lasilix": 250.0,
+          "IMC": 35.0,
+          "IEC_dose": 10.0,
+          "FQ_ECG_sortie": 65.0,
+          "TG": 2.0,
+          "Hb": 9.0,
+          "lymphocyte": 1000.0,
+          "duree_hospitalisation_jour": 10.0,
+          "FEVG": 15.0,
+          "creat": 160.0,
+          "cause_ischémique": 1,
+          "QT_corrige": 475.0,
+          "lasilix": 1,
+          "betabloquants": 0,
+          "plavix_cardiocine": 0,
+          "sintrome_aod": 0,
+          "plavix": 0,
+          "cardiocine100": 0,
+          "sintrom": 0,
+          "AOD": 0,
+          "ARM": 0,
+          "INH_SGLT2": 0,
+          "Ivabradine": 0
+        },
+        "resultat": {
+          "proba": 0.29047705193702006,
+          "score_percent": 29.0,
+          "risk_level": "modere",
+          "technical_class": "a risque"
+        }
+      },
+      {
+        "date_consultation": "2026-09-01T20:44:38",
+        "variables": {
+          "cause_valvulaire": 0,
+          "PAS": 80.0,
+          "OG": 30.0,
+          "ATCD_d_hospitalisation": 2,
+          "dose_de_lasilix": 250.0,
+          "IMC": 35.0,
+          "IEC_dose": 10.0,
+          "FQ_ECG_sortie": 65.0,
+          "TG": 2.0,
+          "Hb": 13.0,
+          "lymphocyte": 1000.0,
+          "duree_hospitalisation_jour": 10.0,
+          "FEVG": 15.0,
+          "creat": 160.0,
+          "cause_ischémique": 1,
+          "QT_corrige": 475.0,
+          "lasilix": 1,
+          "betabloquants": 0,
+          "plavix_cardiocine": 0,
+          "sintrome_aod": 0,
+          "plavix": 0,
+          "cardiocine100": 0,
+          "sintrom": 0,
+          "AOD": 0,
+          "ARM": 0,
+          "INH_SGLT2": 0,
+          "Ivabradine": 0
+        },
+        "resultat": {
+          "proba": 0.28978666436540435,
+          "score_percent": 29.0,
+          "risk_level": "modere",
+          "technical_class": "a risque"
+        }
+      },
+      {
+        "date_consultation": "2026-09-01T20:44:51",
+        "variables": {
+          "cause_valvulaire": 0,
+          "PAS": 80.0,
+          "OG": 30.0,
+          "ATCD_d_hospitalisation": 2,
+          "dose_de_lasilix": 250.0,
+          "IMC": 35.0,
+          "IEC_dose": 10.0,
+          "FQ_ECG_sortie": 65.0,
+          "TG": 2.0,
+          "Hb": 13.0,
+          "lymphocyte": 8000.0,
+          "duree_hospitalisation_jour": 10.0,
+          "FEVG": 15.0,
+          "creat": 160.0,
+          "cause_ischémique": 1,
+          "QT_corrige": 475.0,
+          "lasilix": 1,
+          "betabloquants": 0,
+          "plavix_cardiocine": 0,
+          "sintrome_aod": 0,
+          "plavix": 0,
+          "cardiocine100": 0,
+          "sintrom": 0,
+          "AOD": 0,
+          "ARM": 0,
+          "INH_SGLT2": 0,
+          "Ivabradine": 0
+        },
+        "resultat": {
+          "proba": 0.21558348671561664,
+          "score_percent": 21.6,
+          "risk_level": "modere",
+          "technical_class": "faible risque"
+        }
+      },
+      {
+        "date_consultation": "2026-09-01T20:45:03",
+        "variables": {
+          "cause_valvulaire": 0,
+          "PAS": 80.0,
+          "OG": 30.0,
+          "ATCD_d_hospitalisation": 2,
+          "dose_de_lasilix": 250.0,
+          "IMC": 35.0,
+          "IEC_dose": 10.0,
+          "FQ_ECG_sortie": 65.0,
+          "TG": 2.0,
+          "Hb": 13.0,
+          "lymphocyte": 10.0,
+          "duree_hospitalisation_jour": 10.0,
+          "FEVG": 15.0,
+          "creat": 160.0,
+          "cause_ischémique": 1,
+          "QT_corrige": 475.0,
+          "lasilix": 1,
+          "betabloquants": 0,
+          "plavix_cardiocine": 0,
+          "sintrome_aod": 0,
+          "plavix": 0,
+          "cardiocine100": 0,
+          "sintrom": 0,
+          "AOD": 0,
+          "ARM": 0,
+          "INH_SGLT2": 0,
+          "Ivabradine": 0
+        },
+        "resultat": {
+          "proba": 0.3014227836692329,
+          "score_percent": 30.1,
+          "risk_level": "modere",
+          "technical_class": "a risque"
+        }
+      },
+      {
+        "date_consultation": "2026-09-01T20:45:26",
+        "variables": {
+          "cause_valvulaire": 0,
+          "PAS": 80.0,
+          "OG": 30.0,
+          "ATCD_d_hospitalisation": 2,
+          "dose_de_lasilix": 250.0,
+          "IMC": 35.0,
+          "IEC_dose": 10.0,
+          "FQ_ECG_sortie": 65.0,
+          "TG": 2.0,
+          "Hb": 13.0,
+          "lymphocyte": 10.0,
+          "duree_hospitalisation_jour": 2.0,
+          "FEVG": 15.0,
+          "creat": 160.0,
+          "cause_ischémique": 1,
+          "QT_corrige": 475.0,
+          "lasilix": 1,
+          "betabloquants": 0,
+          "plavix_cardiocine": 0,
+          "sintrome_aod": 0,
+          "plavix": 0,
+          "cardiocine100": 0,
+          "sintrom": 0,
+          "AOD": 0,
+          "ARM": 0,
+          "INH_SGLT2": 0,
+          "Ivabradine": 0
+        },
+        "resultat": {
+          "proba": 0.2997085751276083,
+          "score_percent": 30.0,
+          "risk_level": "modere",
+          "technical_class": "a risque"
+        }
+      },
+      {
+        "date_consultation": "2026-09-01T20:45:38",
+        "variables": {
+          "cause_valvulaire": 0,
+          "PAS": 80.0,
+          "OG": 30.0,
+          "ATCD_d_hospitalisation": 0,
+          "dose_de_lasilix": 250.0,
+          "IMC": 35.0,
+          "IEC_dose": 10.0,
+          "FQ_ECG_sortie": 65.0,
+          "TG": 2.0,
+          "Hb": 13.0,
+          "lymphocyte": 2000.0,
+          "duree_hospitalisation_jour": 2.0,
+          "FEVG": 15.0,
+          "creat": 160.0,
+          "cause_ischémique": 1,
+          "QT_corrige": 475.0,
+          "lasilix": 1,
+          "betabloquants": 0,
+          "plavix_cardiocine": 0,
+          "sintrome_aod": 0,
+          "plavix": 0,
+          "cardiocine100": 0,
+          "sintrom": 0,
+          "AOD": 0,
+          "ARM": 0,
+          "INH_SGLT2": 0,
+          "Ivabradine": 0
+        },
+        "resultat": {
+          "proba": 0.23492028027631695,
+          "score_percent": 23.5,
+          "risk_level": "modere",
+          "technical_class": "a risque"
+        }
+      },
+      {
+        "date_consultation": "2026-09-01T20:45:45",
+        "variables": {
+          "cause_valvulaire": 0,
+          "PAS": 80.0,
+          "OG": 30.0,
+          "ATCD_d_hospitalisation": 1,
+          "dose_de_lasilix": 250.0,
+          "IMC": 35.0,
+          "IEC_dose": 10.0,
+          "FQ_ECG_sortie": 65.0,
+          "TG": 2.0,
+          "Hb": 13.0,
+          "lymphocyte": 2000.0,
+          "duree_hospitalisation_jour": 2.0,
+          "FEVG": 15.0,
+          "creat": 160.0,
+          "cause_ischémique": 1,
+          "QT_corrige": 475.0,
+          "lasilix": 1,
+          "betabloquants": 0,
+          "plavix_cardiocine": 0,
+          "sintrome_aod": 0,
+          "plavix": 0,
+          "cardiocine100": 0,
+          "sintrom": 0,
+          "AOD": 0,
+          "ARM": 0,
+          "INH_SGLT2": 0,
+          "Ivabradine": 0
+        },
+        "resultat": {
+          "proba": 0.25523563415851785,
+          "score_percent": 25.5,
+          "risk_level": "modere",
+          "technical_class": "a risque"
+        }
+      },
+      {
+        "date_consultation": "2026-09-01T20:45:51",
+        "variables": {
+          "cause_valvulaire": 0,
+          "PAS": 80.0,
+          "OG": 30.0,
+          "ATCD_d_hospitalisation": 1,
+          "dose_de_lasilix": 250.0,
+          "IMC": 35.0,
+          "IEC_dose": 10.0,
+          "FQ_ECG_sortie": 65.0,
+          "TG": 2.0,
+          "Hb": 13.0,
+          "lymphocyte": 2000.0,
+          "duree_hospitalisation_jour": 2.0,
+          "FEVG": 35.0,
+          "creat": 160.0,
+          "cause_ischémique": 1,
+          "QT_corrige": 475.0,
+          "lasilix": 1,
+          "betabloquants": 0,
+          "plavix_cardiocine": 0,
+          "sintrome_aod": 0,
+          "plavix": 0,
+          "cardiocine100": 0,
+          "sintrom": 0,
+          "AOD": 0,
+          "ARM": 0,
+          "INH_SGLT2": 0,
+          "Ivabradine": 0
+        },
+        "resultat": {
+          "proba": 0.24902108702726752,
+          "score_percent": 24.9,
+          "risk_level": "modere",
+          "technical_class": "a risque"
+        }
+      },
+      {
+        "date_consultation": "2026-09-01T20:46:01",
+        "variables": {
+          "cause_valvulaire": 0,
+          "PAS": 80.0,
+          "OG": 30.0,
+          "ATCD_d_hospitalisation": 1,
+          "dose_de_lasilix": 250.0,
+          "IMC": 35.0,
+          "IEC_dose": 10.0,
+          "FQ_ECG_sortie": 65.0,
+          "TG": 2.0,
+          "Hb": 13.0,
+          "lymphocyte": 2000.0,
+          "duree_hospitalisation_jour": 2.0,
+          "FEVG": 30.0,
+          "creat": 160.0,
+          "cause_ischémique": 1,
+          "QT_corrige": 475.0,
+          "lasilix": 1,
+          "betabloquants": 0,
+          "plavix_cardiocine": 0,
+          "sintrome_aod": 0,
+          "plavix": 0,
+          "cardiocine100": 0,
+          "sintrom": 0,
+          "AOD": 0,
+          "ARM": 0,
+          "INH_SGLT2": 0,
+          "Ivabradine": 0
+        },
+        "resultat": {
+          "proba": 0.2505651971520708,
+          "score_percent": 25.1,
+          "risk_level": "modere",
+          "technical_class": "a risque"
+        }
+      },
+      {
+        "date_consultation": "2026-09-01T20:46:13",
+        "variables": {
+          "cause_valvulaire": 0,
+          "PAS": 80.0,
+          "OG": 30.0,
+          "ATCD_d_hospitalisation": 1,
+          "dose_de_lasilix": 250.0,
+          "IMC": 35.0,
+          "IEC_dose": 2.5,
+          "FQ_ECG_sortie": 65.0,
+          "TG": 2.0,
+          "Hb": 13.0,
+          "lymphocyte": 2000.0,
+          "duree_hospitalisation_jour": 2.0,
+          "FEVG": 30.0,
+          "creat": 160.0,
+          "cause_ischémique": 1,
+          "QT_corrige": 475.0,
+          "lasilix": 1,
+          "betabloquants": 0,
+          "plavix_cardiocine": 0,
+          "sintrome_aod": 0,
+          "plavix": 0,
+          "cardiocine100": 0,
+          "sintrom": 0,
+          "AOD": 0,
+          "ARM": 0,
+          "INH_SGLT2": 0,
+          "Ivabradine": 0
+        },
+        "resultat": {
+          "proba": 0.25542623223960187,
+          "score_percent": 25.5,
+          "risk_level": "modere",
+          "technical_class": "a risque"
+        }
+      },
+      {
+        "date_consultation": "2026-09-01T20:46:28",
+        "variables": {
+          "cause_valvulaire": 0,
+          "PAS": 80.0,
+          "OG": 30.0,
+          "ATCD_d_hospitalisation": 1,
+          "dose_de_lasilix": 250.0,
+          "IMC": 35.0,
+          "IEC_dose": 2.5,
+          "FQ_ECG_sortie": 65.0,
+          "TG": 2.0,
+          "Hb": 13.0,
+          "lymphocyte": 2000.0,
+          "duree_hospitalisation_jour": 2.0,
+          "FEVG": 30.0,
+          "creat": 110.0,
+          "cause_ischémique": 1,
+          "QT_corrige": 475.0,
+          "lasilix": 1,
+          "betabloquants": 0,
+          "plavix_cardiocine": 0,
+          "sintrome_aod": 0,
+          "plavix": 0,
+          "cardiocine100": 0,
+          "sintrom": 0,
+          "AOD": 0,
+          "ARM": 0,
+          "INH_SGLT2": 0,
+          "Ivabradine": 0
+        },
+        "resultat": {
+          "proba": 0.2450389587624242,
+          "score_percent": 24.5,
+          "risk_level": "modere",
+          "technical_class": "a risque"
+        }
+      }
+    ],
+    "last_result": {
+      "proba": 0.2450389587624242,
+      "score_percent": 24.5,
+      "risk_level": "modere",
+      "technical_class": "a risque"
+    },
+    "last_consultation": "2026-09-01T20:46:28"
+  },
+  {
+    "id": 17,
+    "doctor_id": "dr-bahloul-ramzi",
+    "nom": "x",
+    "prenom": "y",
+    "date_naissance": "1965-02-01",
+    "sexe": "M",
+    "created_at": "2026-09-01",
+    "consultations": [
+      {
+        "date_consultation": "2026-09-01T20:35:17",
+        "variables": {
+          "cause_valvulaire": 0,
+          "PAS": 110.0,
+          "OG": 21.0,
+          "ATCD_d_hospitalisation": 1,
+          "dose_de_lasilix": 40.0,
+          "IMC": 26.0,
+          "IEC_dose": 5.0,
+          "FQ_ECG_sortie": 65.0,
+          "TG": 2.0,
+          "Hb": 13.0,
+          "lymphocyte": 800.0,
+          "duree_hospitalisation_jour": 4.0,
+          "FEVG": 35.0,
+          "creat": 80.0,
+          "cause_ischémique": 1,
+          "QT_corrige": 430.0,
+          "lasilix": 1,
+          "betabloquants": 1,
+          "dose_BB_pourcentage": 50.0,
+          "plavix_cardiocine": 1,
+          "sintrome_aod": 0,
+          "plavix": 1,
+          "cardiocine100": 0,
+          "sintrom": 0,
+          "AOD": 0,
+          "ARM": 1,
+          "INH_SGLT2": 1,
+          "Ivabradine": 0
+        },
+        "resultat": {
+          "proba": 0.16274366145408106,
+          "score_percent": 16.3,
+          "risk_level": "faible",
+          "technical_class": "faible risque"
+        }
+      },
+      {
+        "date_consultation": "2026-09-01T20:37:39",
+        "variables": {
+          "cause_valvulaire": 0,
+          "PAS": 110.0,
+          "OG": 21.0,
+          "ATCD_d_hospitalisation": 1,
+          "dose_de_lasilix": 40.0,
+          "IMC": 26.0,
+          "IEC_dose": 5.0,
+          "FQ_ECG_sortie": 65.0,
+          "TG": 2.0,
+          "Hb": 13.0,
+          "lymphocyte": 800.0,
+          "duree_hospitalisation_jour": 4.0,
+          "FEVG": 39.0,
+          "creat": 80.0,
+          "cause_ischémique": 1,
+          "QT_corrige": 430.0,
+          "lasilix": 1,
+          "betabloquants": 1,
+          "dose_BB_pourcentage": 50.0,
+          "plavix_cardiocine": 1,
+          "sintrome_aod": 0,
+          "plavix": 1,
+          "cardiocine100": 0,
+          "sintrom": 0,
+          "AOD": 0,
+          "ARM": 1,
+          "INH_SGLT2": 1,
+          "Ivabradine": 0
+        },
+        "resultat": {
+          "proba": 0.1618474627284118,
+          "score_percent": 16.2,
+          "risk_level": "faible",
+          "technical_class": "faible risque"
+        }
+      }
+    ],
+    "last_result": {
+      "proba": 0.1618474627284118,
+      "score_percent": 16.2,
+      "risk_level": "faible",
+      "technical_class": "faible risque"
+    },
+    "last_consultation": "2026-09-01T20:37:39"
+  },
+  {
+    "id": 18,
+    "doctor_id": "dr-bahloul-ramzi",
+    "nom": "yosr",
+    "prenom": "y",
+    "date_naissance": "1960-12-10",
+    "sexe": "F",
+    "created_at": "2026-09-01",
+    "consultations": [
+      {
+        "date_consultation": "2026-09-01T20:39:21",
+        "variables": {
+          "cause_valvulaire": 1,
+          "PAS": 128.0,
+          "OG": 30.0,
+          "ATCD_d_hospitalisation": 1,
+          "dose_de_lasilix": 120.0,
+          "IMC": 30.0,
+          "IEC_dose": 10.0,
+          "FQ_ECG_sortie": 83.0,
+          "TG": 1.5,
+          "Hb": 11.0,
+          "lymphocyte": 1200.0,
+          "duree_hospitalisation_jour": 7.0,
+          "FEVG": 25.0,
+          "creat": 125.0,
+          "cause_ischémique": 0,
+          "QT_corrige": 440.0
+        },
+        "resultat": {
+          "proba": 0.25338059794488865,
+          "score_percent": 25.3,
+          "risk_level": "modere",
+          "technical_class": "a risque"
+        }
+      },
+      {
+        "date_consultation": "2026-09-01T20:40:00",
+        "variables": {
+          "cause_valvulaire": 1,
+          "PAS": 128.0,
+          "OG": 30.0,
+          "ATCD_d_hospitalisation": 1,
+          "dose_de_lasilix": 120.0,
+          "IMC": 30.0,
+          "IEC_dose": 10.0,
+          "FQ_ECG_sortie": 83.0,
+          "TG": 1.5,
+          "Hb": 11.0,
+          "lymphocyte": 1200.0,
+          "duree_hospitalisation_jour": 7.0,
+          "FEVG": 25.0,
+          "creat": 125.0,
+          "cause_ischémique": 0,
+          "QT_corrige": 512.0
+        },
+        "resultat": {
+          "proba": 0.2552770478599062,
+          "score_percent": 25.5,
+          "risk_level": "modere",
+          "technical_class": "a risque"
+        }
+      },
+      {
+        "date_consultation": "2026-09-01T20:40:11",
+        "variables": {
+          "cause_valvulaire": 0,
+          "PAS": 128.0,
+          "OG": 30.0,
+          "ATCD_d_hospitalisation": 1,
+          "dose_de_lasilix": 120.0,
+          "IMC": 30.0,
+          "IEC_dose": 10.0,
+          "FQ_ECG_sortie": 83.0,
+          "TG": 1.5,
+          "Hb": 11.0,
+          "lymphocyte": 1200.0,
+          "duree_hospitalisation_jour": 7.0,
+          "FEVG": 25.0,
+          "creat": 125.0,
+          "cause_ischémique": 1,
+          "QT_corrige": 512.0
+        },
+        "resultat": {
+          "proba": 0.22640414073655224,
+          "score_percent": 22.6,
+          "risk_level": "modere",
+          "technical_class": "a risque"
+        }
+      },
+      {
+        "date_consultation": "2026-09-01T20:40:29",
+        "variables": {
+          "cause_valvulaire": 0,
+          "PAS": 90.0,
+          "OG": 30.0,
+          "ATCD_d_hospitalisation": 1,
+          "dose_de_lasilix": 120.0,
+          "IMC": 30.0,
+          "IEC_dose": 10.0,
+          "FQ_ECG_sortie": 83.0,
+          "TG": 1.5,
+          "Hb": 11.0,
+          "lymphocyte": 1200.0,
+          "duree_hospitalisation_jour": 7.0,
+          "FEVG": 25.0,
+          "creat": 125.0,
+          "cause_ischémique": 1,
+          "QT_corrige": 512.0
+        },
+        "resultat": {
+          "proba": 0.24615001411923665,
+          "score_percent": 24.6,
+          "risk_level": "modere",
+          "technical_class": "a risque"
+        }
+      },
+      {
+        "date_consultation": "2026-09-01T20:40:56",
+        "variables": {
+          "cause_valvulaire": 1,
+          "PAS": 90.0,
+          "OG": 36.0,
+          "ATCD_d_hospitalisation": 1,
+          "dose_de_lasilix": 40.0,
+          "IMC": 35.0,
+          "IEC_dose": 2.5,
+          "FQ_ECG_sortie": 83.0,
+          "TG": 1.5,
+          "Hb": 11.0,
+          "lymphocyte": 1200.0,
+          "duree_hospitalisation_jour": 7.0,
+          "FEVG": 25.0,
+          "creat": 125.0,
+          "cause_ischémique": 0,
+          "QT_corrige": 512.0
+        },
+        "resultat": {
+          "proba": 0.26379485279651205,
+          "score_percent": 26.4,
+          "risk_level": "modere",
+          "technical_class": "a risque"
+        }
+      },
+      {
+        "date_consultation": "2026-09-01T20:40:58",
+        "variables": {
+          "cause_valvulaire": 1,
+          "PAS": 90.0,
+          "OG": 36.0,
+          "ATCD_d_hospitalisation": 1,
+          "dose_de_lasilix": 40.0,
+          "IMC": 35.0,
+          "IEC_dose": 2.5,
+          "FQ_ECG_sortie": 83.0,
+          "TG": 1.5,
+          "Hb": 11.0,
+          "lymphocyte": 1200.0,
+          "duree_hospitalisation_jour": 7.0,
+          "FEVG": 25.0,
+          "creat": 125.0,
+          "cause_ischémique": 0,
+          "QT_corrige": 512.0
+        },
+        "resultat": {
+          "proba": 0.26379485279651205,
+          "score_percent": 26.4,
+          "risk_level": "modere",
+          "technical_class": "a risque"
+        }
+      }
+    ],
+    "last_result": {
+      "proba": 0.26379485279651205,
+      "score_percent": 26.4,
+      "risk_level": "modere",
+      "technical_class": "a risque"
+    },
+    "last_consultation": "2026-09-01T20:40:58"
+  },
+  {
+    "id": 19,
+    "doctor_id": "dr-bahloul-ramzi",
+    "nom": "q",
+    "prenom": "sq",
+    "date_naissance": "2000-01-12",
+    "sexe": "M",
+    "created_at": "2026-09-02",
+    "consultations": [
+      {
+        "date_consultation": "2026-09-02T01:53:28",
+        "variables": {
+          "cause_valvulaire": 0,
+          "PAS": 100.0,
+          "OG": 90.0,
+          "ATCD_d_hospitalisation": 1,
+          "dose_de_lasilix": 150.0,
+          "IMC": 25.0,
+          "IEC_dose": 100.0,
+          "FQ_ECG_sortie": 90.0,
+          "TG": 1.2,
+          "Hb": 6.0,
+          "lymphocyte": 8000.0,
+          "duree_hospitalisation_jour": 20.0,
+          "FEVG": 20.0,
+          "creat": 130.0,
+          "cause_ischémique": 1,
+          "QT_corrige": 600.0
+        },
+        "resultat": {
+          "proba": 0.35179942361534533,
+          "score_percent": 35.2,
+          "risk_level": "modere",
+          "technical_class": "a risque"
+        }
+      }
+    ],
+    "last_result": {
+      "proba": 0.35179942361534533,
+      "score_percent": 35.2,
+      "risk_level": "modere",
+      "technical_class": "a risque"
+    },
+    "last_consultation": "2026-09-02T01:53:28"
+  },
+  {
+    "id": 20,
+    "doctor_id": "dr-bahloul-ramzi",
+    "nom": "omar ",
+    "prenom": "ben hassen",
+    "date_naissance": "1960-01-10",
+    "sexe": "M",
+    "created_at": "2026-09-02",
+    "consultations": [
+      {
+        "date_consultation": "2026-09-02T02:50:36",
+        "variables": {
+          "cause_valvulaire": 1,
+          "PAS": 60.0,
+          "OG": 30.0,
+          "ATCD_d_hospitalisation": 0,
+          "dose_de_lasilix": 20.0,
+          "IMC": 30.0,
+          "IEC_dose": 12.0,
+          "FQ_ECG_sortie": 60.0,
+          "TG": 1.2,
+          "Hb": 14.0,
+          "lymphocyte": 1000.0,
+          "duree_hospitalisation_jour": 0.0,
+          "FEVG": 39.0,
+          "creat": 100.0,
+          "cause_ischémique": 1,
+          "QT_corrige": 400.0
+        },
+        "resultat": {
+          "proba": 0.20423873547875784,
+          "score_percent": 20.4,
+          "risk_level": "modere",
+          "technical_class": "faible risque"
+        }
+      }
+    ],
+    "last_result": {
+      "proba": 0.20423873547875784,
+      "score_percent": 20.4,
+      "risk_level": "modere",
+      "technical_class": "faible risque"
+    },
+    "last_consultation": "2026-09-02T02:50:36"
+  },
+  {
+    "id": 21,
+    "doctor_id": "dr-bahloul-ramzi",
+    "nom": "x",
+    "prenom": "t",
+    "date_naissance": "2000-01-10",
+    "sexe": "F",
+    "created_at": "2026-09-05",
+    "consultations": [
+      {
+        "date_consultation": "2026-09-05T01:16:47",
+        "variables": {
+          "espace_PR": 140.0,
+          "cause_valvulaire": 1,
+          "PAD": 150.0,
+          "PAS": 150.0,
+          "OG": 100.0,
+          "Uree": 23.0,
+          "statine": 0,
+          "ATCD_d_hospitalisation": 1,
+          "IMC": 30.0,
+          "IEC_dose": 100.0,
+          "FQ_ECG_sortie": 90.0,
+          "HTAP": 1,
+          "TP": 90.0,
+          "lymphocyte": 2800.0,
+          "ARM": 0,
+          "QT_corrige": 512.0,
+          "Glycemie_a_jeun": 0.8,
+          "ProBNP": 1800.0,
+          "dose_lasilix_sup120": 1,
+          "dose_de_lasilix": 200.0
+        },
+        "resultat": {
+          "proba": 0.5473858202478679,
+          "score_percent": 54.7,
+          "risk_level": "eleve",
+          "technical_class": "a risque"
+        }
+      },
+      {
+        "date_consultation": "2026-09-07T20:45:46",
+        "variables": {
+          "espace_PR": 140.0,
+          "cause_valvulaire": 1,
+          "PAD": 150.0,
+          "PAS": 150.0,
+          "OG": 100.0,
+          "Uree": 23.0,
+          "statine": 0,
+          "ATCD_d_hospitalisation": 1,
+          "IMC": 30.0,
+          "IEC_dose": 100.0,
+          "FQ_ECG_sortie": 90.0,
+          "HTAP": 1,
+          "TP": 90.0,
+          "lymphocyte": 2800.0,
+          "ARM": 0,
+          "QT_corrige": 512.0,
+          "Glycemie_a_jeun": 0.8,
+          "ProBNP": 1800.0,
+          "dose_lasilix_sup120": 1,
+          "dose_de_lasilix": 200.0,
+          "lasilix": 1,
+          "betabloquants": 0,
+          "plavix_cardiocine": 0,
+          "sintrome_aod": 0,
+          "plavix": 0,
+          "cardiocine100": 0,
+          "sintrom": 0,
+          "AOD": 0,
+          "INH_SGLT2": 0,
+          "Ivabradine": 0
+        },
+        "resultat": {
+          "proba": 0.5473858202478679,
+          "score_percent": 54.7,
+          "risk_level": "eleve",
+          "technical_class": "a risque"
+        }
+      }
+    ],
+    "last_result": {
+      "proba": 0.5473858202478679,
+      "score_percent": 54.7,
+      "risk_level": "eleve",
+      "technical_class": "a risque"
+    },
+    "last_consultation": "2026-09-07T20:45:46"
+  }
+]

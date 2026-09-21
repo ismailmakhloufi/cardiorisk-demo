@@ -1,0 +1,155 @@
+{
+  "patient": {
+    "cause_valvulaire": 0,
+    "PAS": 91,
+    "OG": 50,
+    "ATCD_d_hospitalisation": 1,
+    "dose_de_lasilix": 40,
+    "IMC": 22.87,
+    "IEC_dose": 12.5,
+    "FQ_ECG_sortie": 72,
+    "TG": 1.2,
+    "Hb": 10.5,
+    "lymphocyte": 0.8,
+    "duree_hospitalisation_jour": 2,
+    "FEVG": 38,
+    "creat": 130,
+    "cause_ischémique": 1,
+    "QT_corrige": 519
+  },
+  "prediction": {
+    "proba": 0.30521072767701823,
+    "threshold": 0.22,
+    "classe": "a risque",
+    "score": -0.8226061458429574
+  },
+  "rag_context": [
+    {
+      "text": "La réhospitalisation pour insuffisance cardiaque est fréquente après un épisode aigu. Le risque augmente lorsque plusieurs marqueurs de fragilité sont présents : antécédents d'hospitalisation, congestion persistante, insuffisance rénale, hypotension, anémie, FEVG basse ou traitement non optimisé.",
+      "source": "Gheorghiade 2013; Ambrosy 2014",
+      "topic": "rehospitalisation"
+    },
+    {
+      "text": "Un antécédent d'hospitalisation pour insuffisance cardiaque est un marqueur important de risque. Il traduit souvent une maladie plus avancée, une instabilité clinique ou une vulnérabilité à la décompensation.",
+      "source": "AHA/ACC/HFSA 2022; Gheorghiade 2013",
+      "topic": "antecedents"
+    },
+    {
+      "text": "L'insuffisance cardiaque est un syndrome clinique associant symptômes, signes et anomalie structurelle ou fonctionnelle cardiaque. L'évaluation du risque de réhospitalisation doit être intégrée au contexte clinique global et ne remplace pas le jugement médical.",
+      "source": "ESC 2021; NICE NG106",
+      "topic": "definition"
+    },
+    {
+      "text": "Les bêtabloquants validés en insuffisance cardiaque réduisent la mortalité et les hospitalisations chez les patients avec FEVG réduite, lorsqu'ils sont introduits et titrés selon la tolérance clinique.",
+      "source": "CIBIS-II; MERIT-HF; COPERNICUS; ESC 2021",
+      "topic": "beta_bloquants"
+    },
+    {
+      "text": "Une fréquence cardiaque élevée au repos chez un patient en rythme sinusal et FEVG réduite peut être associée à un pronostic moins favorable. L'optimisation des bêtabloquants ou d'autres traitements peut être discutée selon la situation clinique.",
+      "source": "SHIFT; ESC 2021",
+      "topic": "frequence_cardiaque"
+    }
+  ],
+  "dashboard": {
+    "risk_level": "modere",
+    "alerts": [
+      {
+        "title": "Risque de rehospitalisation au-dessus du seuil",
+        "detail": "Probabilite estimee 30.5%, niveau modere.",
+        "priority": "moderee"
+      },
+      {
+        "title": "PAS basse",
+        "detail": "PAS=91 mmHg : verifier tolerance hemodynamique.",
+        "priority": "haute"
+      },
+      {
+        "title": "FEVG reduite",
+        "detail": "FEVG=38% : profil IC-FEr.",
+        "priority": "haute"
+      },
+      {
+        "title": "OG dilatee",
+        "detail": "OG=50 mm : pressions de remplissage probablement elevees.",
+        "priority": "moderee"
+      },
+      {
+        "title": "Creatinine elevee",
+        "detail": "Creatinine=130 umol/L : surveillance renale necessaire.",
+        "priority": "haute"
+      },
+      {
+        "title": "QT corrige prolonge",
+        "detail": "QTc=519 ms : vigilance ECG et troubles ioniques.",
+        "priority": "moderee"
+      },
+      {
+        "title": "Hemoglobine basse",
+        "detail": "Hb=10.5 g/dL : rechercher anemie/carence martiale selon contexte.",
+        "priority": "moderee"
+      },
+      {
+        "title": "Antecedent d'hospitalisation",
+        "detail": "Antecedent present : risque de nouvelle decompensation.",
+        "priority": "haute"
+      }
+    ],
+    "recommendation_cards": [
+      {
+        "category": "Optimisation therapeutique",
+        "action": "Verifier la tolerance des traitements de fond avant toute intensification.",
+        "justification": "La PAS basse peut limiter la titration et impose une adaptation selon la clinique.",
+        "priority": "haute"
+      },
+      {
+        "category": "Optimisation therapeutique",
+        "action": "Verifier que les traitements de fond de l'IC-FEr sont optimises selon tolerance.",
+        "justification": "La FEVG reduite justifie une strategie structuree d'optimisation et de suivi.",
+        "priority": "haute"
+      },
+      {
+        "category": "Gestion de la congestion",
+        "action": "Surveiller poids, dyspnee, oedemes et signes de congestion apres la sortie.",
+        "justification": "Une OG dilatee peut traduire une charge chronique et un risque de decompensation.",
+        "priority": "haute"
+      },
+      {
+        "category": "Biologie",
+        "action": "Programmer ionogramme, creatinine et fonction renale dans les 3 a 7 jours.",
+        "justification": "La fonction renale influence la decongestion et la tolerance des traitements.",
+        "priority": "haute"
+      },
+      {
+        "category": "Biologie",
+        "action": "Verifier kaliemie, magnesemie si disponible, et medicaments allongeant le QT.",
+        "justification": "Un QTc >450 ms impose une vigilance rythmique et medicamenteuse.",
+        "priority": "moderee"
+      },
+      {
+        "category": "Biologie",
+        "action": "Discuter bilan d'anemie et statut martial selon disponibilite clinique.",
+        "justification": "L'anemie peut aggraver fatigue, dyspnee et fragilite en insuffisance cardiaque.",
+        "priority": "moderee"
+      },
+      {
+        "category": "Suivi rapproche",
+        "action": "Planifier un contact precoce apres sortie et une consultation rapprochee.",
+        "justification": "Un antecedent d'hospitalisation augmente le risque de rehospitalisation precoce.",
+        "priority": "haute"
+      },
+      {
+        "category": "Education patient",
+        "action": "Renforcer poids quotidien, observance, regime hyposode adapte et signes d'alerte.",
+        "justification": "L'education aide a detecter precocement la congestion et a reduire les recours non programmes.",
+        "priority": "haute"
+      }
+    ],
+    "next_steps": [
+      "Contact infirmier ou appel de suivi dans les 7 a 14 jours.",
+      "Bilan biologique dans les 3 a 7 jours si creatinine elevee, traitement diuretique ou risque ionique.",
+      "Surveillance quotidienne du poids, dyspnee, oedemes et tolerance tensionnelle.",
+      "Consultation cardiologique rapprochee selon disponibilite et evolution clinique."
+    ]
+  },
+  "rapport": "## Resume executif\nLe patient possède un score de risque de rehospitalisation de 30,5 %, niveau modere. Il présente plusieurs facteurs de risque importants tels qu'une oreillette gauche dilatee, une creatinine elevee et un antecedent d'hospitalisation.\n\n## Facteurs majeurs expliquant le risque\n- Oreillette gauche (OG) = 50 mm : contribution modele +0.389, interpretation clinique : pressions de remplissage probablement elevees.\n- Creatinine (creat) = 130 umol/L : contribution modele +0.031, interpretation clinique : surveillance renale necessaire.\n- Antecedent d'hospitalisation (ATCD_d_hospitalisation) = 1 : contribution modele +0.110, interpretation clinique : risque de nouvelle decompensation.\n- Pression arterielle systolique (PAS) = 91 mmHg : contribution modele +0.089, interpretation clinique : vigilance hemodynamique et tolerance therapeutique.\n\n## Recommandations personnalisees\n### Optimisation therapeutique\nAction: Verifier la tolerance des traitements de fond avant toute intensification.\nJustification: La PAS basse peut limiter la titration et impose une adaptation selon la clinique.\nPriorite: haute\n\n### Gestion de la congestion\nAction: Surveiller poids, dyspnee, oedemes et signes de congestion apres la sortie.\nJustification: Une OG dilatee peut traduire une charge chronique et un risque de decompensation.\nPriorite: haute\n\n### Biologie\nAction: Programmer ionogramme, creatinine et fonction renale dans les 3 a 7 jours.\nJustification: La fonction renale influence la decongestion et la tolerance des traitements.\nPriorite: haute\n\n### Education patient\nAction: Renforcer poids quotidien, observance, regime hyposode adapte et signes d'alerte.\nJustification: L'education aide a detecter precocement la congestion et a reduire les recours non programmes.\nPriorite: haute\n\n### Suivi rapproche\nAction: Planifier un contact precoce apres sortie et une consultation rapprochee.\nJustification: Un antecedent d'hospitalisation augmente le risque de rehospitalisation precoce.\nPriorite: haute\n\n## Alertes actives\n- PAS basse (<100 mmHg) : vigilance hemodynamique et tolerance therapeutique\n- Creatinine elevee : surveillance renale necessaire\n- QT corrige >450 ms : vigilance ECG, medicaments allongeant le QT et troubles ioniques\n\n## Prochaines etapes\n- Contact infirmier ou appel de suivi dans les 7 a 14 jours.\n- Bilan biologique dans les 3 a 7 jours si creatinine elevee, traitement diuretique ou risque ionique.\n- Surveillance quotidienne du poids, dyspnee, oedemes et tolerance tensionnelle.\n\n## Limites\nCe rapport est un outil d'aide a la decision et ne remplace pas le jugement medical. Les recommandations doivent être adaptees au contexte clinique global."
+}

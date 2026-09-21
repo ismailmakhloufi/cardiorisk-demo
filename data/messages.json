@@ -1,0 +1,18 @@
+[
+  {
+    "id": "msg-64b1e304",
+    "patient_auth_id": "pat-8cd56808",
+    "doctor_id": "dr-bahloul-ramzi",
+    "sender_role": "patient",
+    "content": "docteur j ai mal au coeur",
+    "created_at": "2026-09-21T19:32:38"
+  },
+  {
+    "id": "msg-397f6ac7",
+    "patient_auth_id": "pat-8cd56808",
+    "doctor_id": "dr-bahloul-ramzi",
+    "sender_role": "doctor",
+    "content": "ok",
+    "created_at": "2026-09-21T19:32:56"
+  }
+]
