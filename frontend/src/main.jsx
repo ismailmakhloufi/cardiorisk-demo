@@ -559,7 +559,6 @@ function App() {
             <div className="loginCard" style={{ margin:'0 auto' }}>
               <div className="brand loginBrand"><HeartPulse size={28} /><div><b>CardioRisk AI</b><span>Espace cardiologue</span></div></div>
               <h1>{authMode === 'login' ? 'Connexion cardiologue' : 'Inscription cardiologue'}</h1>
-              <p>Chaque compte voit uniquement ses propres patients.</p>
               {error && <div className="error">{error}</div>}
               <label><span>Nom du médecin</span><input value={loginForm.name} onChange={(e) => setLoginForm((p) => ({ ...p, name: e.target.value }))} /></label>
               <label><span>Mot de passe</span><input type="password" value={loginForm.password} onChange={(e) => setLoginForm((p) => ({ ...p, password: e.target.value }))} /></label>
