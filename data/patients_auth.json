@@ -1,13 +1,1 @@
-[
-  {
-    "id": "pat-8cd56808",
-    "email": "tx@email.com",
-    "nom": "ismail",
-    "prenom": "m",
-    "doctor_id": "dr-bahloul-ramzi",
-    "date_naissance": "",
-    "sexe": "",
-    "password_hash": "9af15b336e6a9619928537df30b2e6a2376569fcf9d7e773eccede65606529a0",
-    "created_at": "2026-09-21T19:32:17"
-  }
-]
+[]
