@@ -3,7 +3,7 @@ import { createRoot } from 'react-dom/client';
 import { Activity, AlertTriangle, BarChart3, CalendarClock, Download, FileText, HeartPulse, Home, Loader2, MessageSquare, Send, Settings, ShieldPlus, Stethoscope, Upload, User, UserPlus, Users } from 'lucide-react';
 import './styles.css';
 
-const API_URL = import.meta.env.VITE_API_URL || '';
+const API_URL = import.meta.env.VITE_API_URL || (import.meta.env.DEV ? 'http://localhost:8000' : '');
 
 const initialPredictionVariables = {
   espace_PR: 160,
