@@ -978,11 +978,12 @@ function Ordonnance({ variables, setVariables }) {
 }
 
 function Recommendations({ result }) {
+  const replaceProBNP = (text) => text.replace(/ProBNP/gi, 'BNP');
   return (
     <section className="panel" id="recommendations">
       <h2>Recommandations personnalisées</h2>
       <div className="recommendationGrid">
-        {result.dashboard.recommendation_cards.slice(0, 5).map((c, i) => <div className={`recCard priorite-${c.priority}`} key={i}><span className="priority">{c.priority}</span><h3>{c.category}</h3><p><b>Action:</b> {c.action}</p><p><b>Pourquoi:</b> {c.justification}</p></div>)}
+        {result.dashboard.recommendation_cards.slice(0, 5).map((c, i) => <div className={`recCard priorite-${c.priority}`} key={i}><span className="priority">{c.priority}</span><h3>{c.category}</h3><p><b>Action:</b> {replaceProBNP(c.action)}</p><p><b>Pourquoi:</b> {replaceProBNP(c.justification)}</p></div>)}
       </div>
       {result.report_markdown && <div className="reportPanel"><h2>Rapport IA</h2><pre>{result.report_markdown}</pre></div>}
     </section>
