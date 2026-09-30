@@ -289,7 +289,8 @@ function App() {
       setPatientAuth(null);
       setSpace('doctor');
     } catch (e) {
-      setError(e.message || 'Erreur inconnue');
+      const msg = e?.message || e?.detail || (typeof e === 'string' ? e : JSON.stringify(e)) || 'Erreur inconnue';
+      setError(msg);
     } finally {
       setLoading(false);
     }
@@ -310,7 +311,8 @@ function App() {
       setDoctor(null);
       setSpace('patient');
     } catch (e) {
-      setError(e.message || 'Erreur inconnue');
+      const msg = e?.message || e?.detail || (typeof e === 'string' ? e : JSON.stringify(e)) || 'Erreur inconnue';
+      setError(msg);
     } finally { setLoading(false); }
   };
 
@@ -333,7 +335,7 @@ function App() {
       await fetch(`${API_URL}/api/messages`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ patient_auth_id: patientAuth.id, doctor_id: patientAuth.doctor_id, sender_role: 'patient', content: newMsg }) });
       setNewMsg('');
       await loadPatientMessages();
-    } catch (e) { setError(e.message); } finally { setLoading(false); }
+    } catch (e) { const msg = e?.message || e?.detail || (typeof e === 'string' ? e : JSON.stringify(e)) || 'Erreur inconnue'; setError(msg); } finally { setLoading(false); }
   };
 
   const sendDoctorMessage = async () => {
@@ -343,11 +345,10 @@ function App() {
       await fetch(`${API_URL}/api/messages`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ patient_auth_id: selectedConv.patient_auth_id, doctor_id: currentDoctorId, sender_role: 'doctor', content: doctorReply }) });
       setDoctorReply('');
       await loadConversations();
-      // refresh selected
       const res = await fetch(`${API_URL}/api/messages?patient_auth_id=${selectedConv.patient_auth_id}&doctor_id=${currentDoctorId}`);
       const data = await res.json();
       setSelectedConv((prev) => ({ ...prev, messages: data.messages }));
-    } catch (e) { setError(e.message); } finally { setLoading(false); }
+    } catch (e) { const msg = e?.message || e?.detail || (typeof e === 'string' ? e : JSON.stringify(e)) || 'Erreur inconnue'; setError(msg); } finally { setLoading(false); }
   };
 
   const uploadBilan = async () => {
@@ -364,7 +365,7 @@ function App() {
       if (!res.ok) throw new Error(data.detail || 'Erreur upload');
       setUploadFile(null); setUploadDesc('');
       await loadPatientMessages();
-    } catch (e) { setError(e.message); } finally { setLoading(false); }
+    } catch (e) { const msg = e?.message || e?.detail || (typeof e === 'string' ? e : JSON.stringify(e)) || 'Erreur inconnue'; setError(msg); } finally { setLoading(false); }
   };
 
   const replyBilan = async (bilanId) => {
@@ -377,7 +378,7 @@ function App() {
       if (!res.ok) throw new Error(data.detail || 'Erreur réponse');
       setBilanReply((p) => ({ ...p, [bilanId]: '' }));
       await loadConversations();
-    } catch (e) { setError(e.message); } finally { setLoading(false); }
+    } catch (e) { const msg = e?.message || e?.detail || (typeof e === 'string' ? e : JSON.stringify(e)) || 'Erreur inconnue'; setError(msg); } finally { setLoading(false); }
   };
 
   const startNewPatient = () => {
@@ -444,7 +445,8 @@ function App() {
       setSelectedPatient(saved.record);
       await loadPatients();
     } catch (e) {
-      setError(e.message || 'Erreur inconnue');
+      const msg = e?.message || e?.detail || (typeof e === 'string' ? e : JSON.stringify(e)) || 'Erreur inconnue';
+      setError(msg);
     } finally {
       setLoading(false);
     }
@@ -466,7 +468,8 @@ function App() {
       setResult(data);
       window.scrollTo({ top: 0, behavior: 'smooth' });
     } catch (e) {
-      setError(e.message || 'Erreur inconnue');
+      const msg = e?.message || e?.detail || (typeof e === 'string' ? e : JSON.stringify(e)) || 'Erreur inconnue';
+      setError(msg);
     } finally {
       setLoading(false);
     }
@@ -494,7 +497,8 @@ function App() {
       setDoctor(data.doctor);
       setSettingsForm((p) => ({ ...p, password: '' }));
     } catch (e) {
-      setError(e.message || 'Erreur inconnue');
+      const msg = e?.message || e?.detail || (typeof e === 'string' ? e : JSON.stringify(e)) || 'Erreur inconnue';
+      setError(msg);
     } finally {
       setLoading(false);
     }
@@ -522,7 +526,8 @@ function App() {
       setImportStatus(`${data.imported} patient(s) importé(s). ${data.errors?.length ? `${data.errors.length} ligne(s) avec erreur.` : ''}`);
       await loadPatients();
     } catch (e) {
-      setError(e.message || 'Erreur inconnue');
+      const msg = e?.message || e?.detail || (typeof e === 'string' ? e : JSON.stringify(e)) || 'Erreur inconnue';
+      setError(msg);
       setImportStatus('');
     } finally {
       setLoading(false);
