@@ -914,7 +914,7 @@ function App() {
               </div>
               <div className="sideStack">
                 <div className="panel mortalityCard"><h2>Niveau de risque</h2><strong style={{ color: activeRisk ? riskColor(activeRisk.risk_level) : '#64748b' }}>{activeRisk ? activeRisk.risk_level : '--'}</strong><span>{activeRisk ? `${activeRisk.score_percent.toFixed(1)}% estimé` : 'En attente'}</span></div>
-                <div className="panel alertsPanel"><h2>Alertes actives</h2>{result ? result.dashboard.alerts.slice(0, 3).map((a, i) => <div className={`alert ${a.priority}`} key={i}><AlertTriangle size={18} /><div><b>{a.title}</b><span>{a.detail}</span></div></div>) : <p className="muted">Calculer pour afficher les alertes.</p>}</div>
+                <div className="panel alertsPanel"><h2>Alertes actives</h2>{result ? result.dashboard.alerts.slice(0, 3).map((a, i) => <div className={`alert ${a.priority}`} key={i}><AlertTriangle size={18} /><div><b>{a.title.replace(/ProBNP/gi, 'BNP')}</b><span>{a.detail.replace(/ProBNP/gi, 'BNP')}</span></div></div>) : <p className="muted">Calculer pour afficher les alertes.</p>}</div>
               </div>
             </section>
 
