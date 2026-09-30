@@ -122,7 +122,13 @@ function predictionVariables(values) {
 }
 
 function saveVariables(values) {
-  return Object.fromEntries(Object.entries(values).map(([key, value]) => [key, value === '' ? null : value]));
+  const out = Object.fromEntries(Object.entries(values).map(([key, value]) => [key, value === '' ? null : value]));
+  // Convert HTAP raw value to categorical (0,1,2) for model compatibility
+  if (out.HTAP !== null && out.HTAP !== undefined) {
+    const htapVal = Number(out.HTAP);
+    out.HTAP = htapVal < 40 ? 0 : htapVal < 60 ? 1 : 2;
+  }
+  return out;
 }
 
 function withVariableDefaults(values = {}) {
