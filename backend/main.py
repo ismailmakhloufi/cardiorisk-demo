@@ -321,7 +321,8 @@ app.add_middleware(
 def _patient_dict(patient: PatientInput) -> Dict:
     values = patient.model_dump(exclude_none=True)
     # Map bnp alias to ProBNP for model compatibility
-    if values.get("bnp") is not None and values.get("ProBNP") is None:
+    # ProBNP has default 1500, so check if bnp was explicitly provided
+    if values.get("bnp") is not None and (values.get("ProBNP") is None or values.get("ProBNP") == 1500):
         values["ProBNP"] = values["bnp"]
     if values.get("plavix_cardiocine") is not None:
         values["plavix"] = 1 if values["plavix_cardiocine"] == 1 else 0
@@ -374,7 +375,7 @@ def _prediction_payload(patient_dict: Dict) -> Dict:
 def _medical_values(patient: PatientSave) -> Dict:
     values = patient.model_dump()
     # Map bnp alias to ProBNP for model compatibility
-    if values.get("bnp") is not None and values.get("ProBNP") is None:
+    if values.get("bnp") is not None and (values.get("ProBNP") is None or values.get("ProBNP") == 1500):
         values["ProBNP"] = values["bnp"]
     if values.get("plavix_cardiocine") is not None:
         values["plavix"] = 1 if values["plavix_cardiocine"] == 1 else 0
