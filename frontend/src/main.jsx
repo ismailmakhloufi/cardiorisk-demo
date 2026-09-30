@@ -889,7 +889,10 @@ function App() {
               <div className="panel factorsPanel">
                 <h2>Facteurs majeurs contribuant au risque</h2>
                 <div className="factorList">
-                  {result ? result.major_factors.slice(0, 5).map((f) => <div className="factor" key={f.variable}><span>{f.variable}</span><b className={f.contribution >= 0 ? 'up' : 'down'}>{f.contribution >= 0 ? '+' : ''}{f.contribution.toFixed(3)}</b></div>) : <p className="muted">Calculer pour afficher les facteurs détaillés.</p>}
+                  {result ? result.major_factors.slice(0, 5).map((f) => {
+                    const displayName = f.variable === 'ProBNP' ? 'BNP' : f.variable;
+                    return <div className="factor" key={f.variable}><span>{displayName}</span><b className={f.contribution >= 0 ? 'up' : 'down'}>{f.contribution >= 0 ? '+' : ''}{f.contribution.toFixed(3)}</b></div>;
+                  }) : <p className="muted">Calculer pour afficher les facteurs détaillés.</p>}
                 </div>
               </div>
               <div className="sideStack">
