@@ -23,7 +23,7 @@ const initialPredictionVariables = {
   ARM: 0,
   QT_corrige: 420,
   Glycemie_a_jeun: 1.0,
-  ProBNP: 1500,
+  bnp: 1500,
   dose_de_lasilix: 40,
 };
 
@@ -58,7 +58,7 @@ const emptyPredictionVariables = {
   ARM: '',
   QT_corrige: '',
   Glycemie_a_jeun: '',
-  ProBNP: '',
+  bnp: '',
   dose_de_lasilix: '',
 };
 
@@ -95,7 +95,7 @@ const fields = [
   ['ARM', 'ARM', '0/1'],
   ['QT_corrige', 'QT corrigé', 'ms'],
   ['Glycemie_a_jeun', 'Glycémie à jeun', 'g/L'],
-  ['ProBNP', 'BNP', 'pg/mL'],
+  ['bnp', 'BNP', 'pg/mL'],
   ['dose_de_lasilix', 'Dose Lasilix', 'mg'],
 ];
 
@@ -835,8 +835,8 @@ function App() {
               </div>
             </div>
             <div className="columnsHint">
-              <b>Colonnes attendues (19 vars modèle 100% - dose_sup120 dérivé auto) :</b>
-              <code>nom, prenom, date_naissance, sexe, espace_PR, cause_valvulaire, PAD, PAS, OG, Uree, statine, ATCD_d_hospitalisation, IMC, IEC_dose, FQ_ECG_sortie, HTAP, TP, lymphocyte, ARM, QT_corrige, Glycemie_a_jeun, ProBNP, dose_de_lasilix</code>
+              <b>Colonnes attendues  :</b>
+              <code>nom, prenom, date_naissance, sexe, espace_PR, cause_valvulaire, PAD, PAS, OG, Uree, statine, ATCD_d_hospitalisation, IMC, IEC_dose, FQ_ECG_sortie, HTAP, TP, lymphocyte, ARM, QT_corrige, Glycemie_a_jeun, ProBNP, bnp, dose_de_lasilix</code>
               <b>Colonnes ordonnance optionnelles :</b>
               <code>lasilix, betabloquants, dose_BB_pourcentage, plavix_cardiocine, sintrome_aod, plavix, cardiocine100, sintrom, AOD, ARM, INH_SGLT2, Ivabradine</code>
             </div>
@@ -875,7 +875,7 @@ function App() {
                 <p>Age {calculateAge(identity.date_naissance)} ans · {identity.sexe || 'Sexe non renseigné'}</p>
                 <span>{selectedPatient ? 'Historique disponible' : 'Nouveau patient'} · Consultation du jour</span>
               </div>
-              <div className="heroMetric"><ShieldPlus size={22} /><span>BNP</span><b>{variables.ProBNP ?? '--'}</b></div>
+              <div className="heroMetric"><ShieldPlus size={22} /><span>BNP</span><b>{variables.bnp ?? '--'}</b></div>
               <div className="heroMetric"><Activity size={22} /><span>HTAP</span><b>{variables.HTAP ?? '--'}</b></div>
               <div className="heroMetric"><HeartPulse size={22} /><span>QTc</span><b>{variables.QT_corrige} ms</b></div>
               <div className="heroMetric"><CalendarClock size={22} /><span>Consult.</span><b>{selectedPatient?.consultations?.length || 0}</b></div>
@@ -993,7 +993,7 @@ function History({ patient, onSelect }) {
           <button className="historyItem" key={`${c.date_consultation}-${i}`} onClick={() => onSelect(c)}>
             <div>
               <b>{c.date_consultation?.replace('T', ' ')}</b>
-              <span>BNP {c.variables?.ProBNP ?? '--'} · HTAP {c.variables?.HTAP ?? '--'} · QTc {c.variables?.QT_corrige} ms</span>
+              <span>{c.variables?.bnp ?? '--'} · HTAP {c.variables?.HTAP ?? '--'} · QTc {c.variables?.QT_corrige} ms</span>
               <em>Cliquer pour afficher score, alertes et recommandations</em>
             </div>
             <strong style={{ color: riskColor(c.resultat?.risk_level) }}>{c.resultat?.score_percent}% · {c.resultat?.risk_level}</strong>

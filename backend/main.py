@@ -180,6 +180,7 @@ class PatientInput(BaseModel):
     QT_corrige: float
     Glycemie_a_jeun: float = Field(1.1, ge=0.2, le=10)
     ProBNP: float = Field(1500, ge=0, le=50000)
+    bnp: Optional[float] = Field(None, ge=0, le=50000)
     dose_lasilix_sup120: Optional[int] = Field(None, ge=0, le=1)
     dose_de_lasilix: Optional[float] = None
     lasilix: Optional[int] = Field(None, ge=0, le=1)
@@ -221,6 +222,7 @@ class PatientSave(BaseModel):
     QT_corrige: float
     Glycemie_a_jeun: float = Field(1.1, ge=0.2, le=10)
     ProBNP: float = Field(1500, ge=0, le=50000)
+    bnp: Optional[float] = Field(None, ge=0, le=50000)
     dose_lasilix_sup120: Optional[int] = Field(None, ge=0, le=1)
     dose_de_lasilix: Optional[float] = None
     lasilix: Optional[int] = Field(None, ge=0, le=1)
@@ -318,6 +320,9 @@ app.add_middleware(
 
 def _patient_dict(patient: PatientInput) -> Dict:
     values = patient.model_dump(exclude_none=True)
+    # Map bnp alias to ProBNP for model compatibility
+    if values.get("bnp") is not None and values.get("ProBNP") is None:
+        values["ProBNP"] = values["bnp"]
     if values.get("plavix_cardiocine") is not None:
         values["plavix"] = 1 if values["plavix_cardiocine"] == 1 else 0
         values["cardiocine100"] = 1 if values["plavix_cardiocine"] == 2 else 0
@@ -368,6 +373,9 @@ def _prediction_payload(patient_dict: Dict) -> Dict:
 
 def _medical_values(patient: PatientSave) -> Dict:
     values = patient.model_dump()
+    # Map bnp alias to ProBNP for model compatibility
+    if values.get("bnp") is not None and values.get("ProBNP") is None:
+        values["ProBNP"] = values["bnp"]
     if values.get("plavix_cardiocine") is not None:
         values["plavix"] = 1 if values["plavix_cardiocine"] == 1 else 0
         values["cardiocine100"] = 1 if values["plavix_cardiocine"] == 2 else 0
@@ -537,7 +545,7 @@ def import_patients(doctor_id: str, payload: ImportPayload):
     except Exception as exc:
         raise HTTPException(status_code=400, detail=f"Fichier illisible: {exc}") from exc
 
-    import_required = ["nom", "prenom", "date_naissance", "sexe", "espace_PR", "cause_valvulaire", "PAD", "PAS", "OG", "Uree", "statine", "ATCD_d_hospitalisation", "IMC", "IEC_dose", "FQ_ECG_sortie", "HTAP", "TP", "lymphocyte", "ARM", "QT_corrige", "Glycemie_a_jeun", "ProBNP", "dose_de_lasilix"]
+    import_required = ["nom", "prenom", "date_naissance", "sexe", "espace_PR", "cause_valvulaire", "PAD", "PAS", "OG", "Uree", "statine", "ATCD_d_hospitalisation", "IMC", "IEC_dose", "FQ_ECG_sortie", "HTAP", "TP", "lymphocyte", "ARM", "QT_corrige", "Glycemie_a_jeun", "ProBNP", "bnp", "dose_de_lasilix"]
     missing = [col for col in import_required if col not in df.columns]
     if missing:
         raise HTTPException(status_code=400, detail=f"Colonnes manquantes: {', '.join(missing)}")
