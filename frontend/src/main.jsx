@@ -890,7 +890,9 @@ function App() {
                 <h2>Facteurs majeurs contribuant au risque</h2>
                 <div className="factorList">
                   {result ? result.major_factors.slice(0, 5).map((f) => {
-                    const displayName = f.variable === 'ProBNP' ? 'BNP' : f.variable;
+                    let displayName = f.variable;
+                    if (f.variable === 'ProBNP') displayName = 'BNP';
+                    else if (f.variable === 'dose_lasilix_sup120') displayName = 'dose lasilix';
                     return <div className="factor" key={f.variable}><span>{displayName}</span><b className={f.contribution >= 0 ? 'up' : 'down'}>{f.contribution >= 0 ? '+' : ''}{f.contribution.toFixed(3)}</b></div>;
                   }) : <p className="muted">Calculer pour afficher les facteurs détaillés.</p>}
                 </div>
