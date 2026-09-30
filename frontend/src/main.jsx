@@ -436,6 +436,10 @@ function App() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(saveBody),
       });
+      if (!saveRes.ok) {
+        const err = await saveRes.json();
+        throw new Error(err.detail || `Erreur sauvegarde ${saveRes.status}`);
+      }
       const saved = await saveRes.json();
       setSelectedPatient(saved.record);
       await loadPatients();
