@@ -1,6 +1,6 @@
 import React from 'react';
 import { createRoot } from 'react-dom/client';
-import { Activity, AlertTriangle, BarChart3, CalendarClock, Download, FileText, HeartPulse, Home, Loader2, Lock, MessageSquare, Send, Settings, ShieldPlus, Stethoscope, Upload, User, UserPlus, Users } from 'lucide-react';
+import { Activity, AlertTriangle, BarChart3, CalendarClock, Download, FileText, HeartPulse, Home, Loader2, Lock, Mail, MessageSquare, Send, Settings, ShieldPlus, Stethoscope, Upload, User, UserPlus, Users } from 'lucide-react';
 import './styles.css';
 
 const API_URL = import.meta.env.VITE_API_URL || (import.meta.env.DEV ? 'http://localhost:8000' : '');
