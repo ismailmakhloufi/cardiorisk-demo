@@ -949,7 +949,7 @@ function PatientRow({ patient, onClick }) {
   const result = patient.last_result || {};
   return (
     <button className="patientRow" onClick={onClick}>
-      <div><b>{patient.prenom || 'Prénom'} {patient.nom || 'Nom'}</b><span>Patient #{patient.id} · {calculateAge(patient.date_naissance)} ans · {patient.sexe || '--'}</span></div>
+      <div><b>{patient.prenom || 'Prénom'} {patient.nom || 'Nom'}</b><span>Patient #{patient.id} · {patient.date_naissance ? `${patient.date_naissance} · ` : ''}{calculateAge(patient.date_naissance)} ans · {patient.sexe || '--'}</span></div>
       <div><b style={{ color: riskColor(result.risk_level) }}>{result.score_percent ? `${result.score_percent}%` : '--'}</b><span>{result.risk_level || 'non calculé'}</span></div>
       <div><b>{patient.consultations?.length || 0}</b><span>consultations</span></div>
       <div><b>{patient.last_consultation?.slice(0, 10) || '--'}</b><span>dernière visite</span></div>
