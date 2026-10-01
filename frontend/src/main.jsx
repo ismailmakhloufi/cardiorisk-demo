@@ -555,8 +555,8 @@ function App() {
 
           {space==='selector' && (
             <div className="panel" style={{ textAlign:'center', padding: 32 }}>
-              <h1 style={{ margin:'0 0 6px', fontSize:26, color:'#0f172a' }}>Bienvenue sur CardioRisk AI</h1>
-              <p style={{ margin:'0 0 18px', color:'#64748b', fontSize:14 }}>Votre assistant intelligent pour anticiper les risques cardiaques et faciliter la communication médecin-patient</p>
+              <h1 style={{ margin:'0 0 6px', fontSize:26, color:'#0f172a' }}>CardioRisk AI — Prédiction & Suivi Insuffisance Cardiaque</h1>
+              <p style={{ margin:'0 0 18px', color:'#64748b', fontSize:14 }}>Réduisez les réhospitalisations de 30% grâce à l'IA prédictive et au suivi patient connecté</p>
               <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:12, marginTop:14 }}>
                 <button onClick={()=>setSpace('doctor')} style={{ cursor:'pointer', background:'linear-gradient(135deg,#4f46e5,#06b6d4)', color:'white', border:'0', borderRadius:14, padding:'16px 14px', display:'grid', gap:4, textAlign:'left' }}>
                   <span style={{ display:'flex', alignItems:'center', gap:8, fontWeight:800, fontSize:14 }}><Stethoscope size={18}/> Espace Médecin →</span>
@@ -572,8 +572,9 @@ function App() {
 
           {space==='doctor' && (
             <div className="loginCard" style={{ margin:'0 auto' }}>
-              <div className="brand loginBrand"><HeartPulse size={28} /><div><b>CardioRisk AI</b><span>Espace cardiologue</span></div></div>
-              <h1>{authMode === 'login' ? 'Connexion cardiologue' : 'Inscription cardiologue'}</h1>
+              <div className="brand loginBrand"><HeartPulse size={28} /><div><b>CardioRisk AI</b><span>Espace Cardiologue</span></div></div>
+              <h1>{authMode === 'login' ? 'Connexion Cardiologue' : 'Inscription Cardiologue'}</h1>
+              <p style={{ color:'#64748b', fontSize:13, marginBottom:12 }}>Accédez à votre tableau de bord, calculez les scores IA et suivez vos patients</p>
               {error && <div className="error">{error}</div>}
               <label><span>Nom du médecin</span><input value={loginForm.name} onChange={(e) => setLoginForm((p) => ({ ...p, name: e.target.value }))} /></label>
               <label><span>Mot de passe</span><input type="password" value={loginForm.password} onChange={(e) => setLoginForm((p) => ({ ...p, password: e.target.value }))} /></label>
@@ -586,8 +587,8 @@ function App() {
           {space==='patient' && (
             <div className="loginCard" style={{ margin:'0 auto' }}>
               <div className="brand loginBrand"><HeartPulse size={28} /><div><b>CardioRisk AI</b><span>Espace patient</span></div></div>
-              <h1>{patientMode === 'login' ? 'Connexion patient' : 'Inscription patient'}</h1>
-              <p>Accédez à votre messagerie et envoyez vos bilans à votre cardiologue.</p>
+              <h1>{patientMode === 'login' ? 'Connexion Patient' : 'Inscription Patient'}</h1>
+              <p style={{ color:'#64748b', fontSize:13, marginBottom:12 }}>Accédez à votre suivi, envoyez vos bilans et discutez avec votre cardiologue</p>
               {error && <div className="error">{error}</div>}
               {patientMode==='signup' && (
                 <>
@@ -622,7 +623,7 @@ function App() {
       <div className="appShell" style={{ gridTemplateColumns:'1fr' }}>
         <main style={{ maxWidth: 900, margin:'0 auto', width:'100%' }}>
           <header>
-            <div><h1>Espace Patient</h1><p>Bienvenue {patientAuth.prenom} {patientAuth.nom} — Médecin: {doctorName}</p></div>
+            <div><h1>Mon Suivi Cardiaque</h1><p>Bienvenue {patientAuth.prenom} {patientAuth.nom} — Cardiologue: {doctorName}</p></div>
             <div className="doctorBar">
               <div className="doctorChip"><User size={18}/><div><b>{patientAuth.prenom} {patientAuth.nom}</b><small>{patientAuth.email}</small></div></div>
               <button className="ghostBtn noMargin" onClick={logoutPatient}>Déconnexion</button>
@@ -696,21 +697,21 @@ function App() {
   return (
     <div className="appShell">
       <aside>
-        <div className="brand"><HeartPulse size={26} /> <div><b>CardioRisk AI</b><span>Prédiction et suivi<br />cardiologique</span></div></div>
+        <div className="brand"><HeartPulse size={26} /> <div><b>CardioRisk AI</b><span>Prédiction & Suivi IC-FEr</span></div></div>
         <nav>
           <button className={view === 'dashboard' ? 'active' : ''} onClick={() => setView('dashboard')}><Home size={18} /> Tableau de bord</button>
           <button className={view === 'patients' ? 'active' : ''} onClick={() => setView('patients')}><Users size={18} /> Mes patients</button>
-          {(() => { const unread = conversations.reduce((s,c)=> s + (c.unread_count||0), 0); return <button className={view === 'messagerie' ? 'active' : ''} onClick={() => { setView('messagerie'); loadConversations(); }}><MessageSquare size={18} /> Messagerie / Bilans {unread>0 && <span style={{ background:'#ef4444', color:'white', borderRadius:999, padding:'2px 7px', fontSize:11 }}>{unread}</span>}</button>; })()}
+          {(() => { const unread = conversations.reduce((s,c)=> s + (c.unread_count||0), 0); return <button className={view === 'messagerie' ? 'active' : ''} onClick={() => { setView('messagerie'); loadConversations(); }}><MessageSquare size={18} /> Messagerie & Bilans {unread>0 && <span style={{ background:'#ef4444', color:'white', borderRadius:999, padding:'2px 7px', fontSize:11 }}>{unread}</span>}</button>; })()}
           <button className={view === 'importExport' ? 'active' : ''} onClick={() => setView('importExport')}><Upload size={18} /> Importer / Exporter</button>
           <button className={view === 'statistics' ? 'active' : ''} onClick={() => setView('statistics')}><BarChart3 size={18} /> Statistiques</button>
           <button className={view === 'settings' ? 'active' : ''} onClick={() => setView('settings')}><Settings size={18} /> Paramètres</button>
         </nav>
-        <button className="addPatientBtn" onClick={startNewPatient}><UserPlus size={18} /> Ajouter un patient</button>
+        <button className="addPatientBtn" onClick={startNewPatient}><UserPlus size={18} /> Nouveau patient</button>
       </aside>
 
       <main>
         <header>
-          <div><h1>{view === 'patients' ? 'Mes patients' : view === 'dashboard' ? 'Patients graves' : view === 'messagerie' ? 'Messagerie & Bilans patients' : view === 'settings' ? 'Paramètres' : view === 'importExport' ? 'Importer / Exporter' : view === 'statistics' ? 'Statistiques' : 'Tableau de bord patient'}</h1><p>Anticipez les décompensations, priorisez les patients et personnalisez le suivi.</p></div>
+          <div><h1>{view === 'patients' ? 'Mes patients' : view === 'dashboard' ? 'Patients à risque élevé' : view === 'messagerie' ? 'Messagerie & Bilans patients' : view === 'settings' ? 'Paramètres' : view === 'importExport' ? 'Importer / Exporter' : view === 'statistics' ? 'Statistiques' : 'Tableau de bord patient'}</h1><p>Anticipez les décompensations, priorisez les patients et personnalisez le suivi.</p></div>
           <div className="doctorBar">
             <div className="doctorChip">{doctor.photo_url ? <img src={doctor.photo_url} alt="Profil" /> : <User size={18} />}<div><b>{doctor.name}</b><small>{doctor.role || 'Cardiologue'}</small></div></div>
             <button className="ghostBtn noMargin" onClick={logout}>Déconnexion</button>
