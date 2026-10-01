@@ -1,6 +1,7 @@
 import React from 'react';
 import { createRoot } from 'react-dom/client';
 import { Activity, AlertTriangle, BarChart3, CalendarClock, Download, FileText, HeartPulse, Home, Loader2, Lock, Mail, MessageSquare, Send, Settings, ShieldPlus, Stethoscope, Upload, User, UserPlus, Users } from 'lucide-react';
+import { QRCodeSVG } from 'qrcode.react';
 import './styles.css';
 
 const API_URL = import.meta.env.VITE_API_URL || (import.meta.env.DEV ? 'http://localhost:8000' : '');
@@ -620,6 +621,15 @@ function App() {
                   <span style={{ display:'flex', alignItems:'center', gap:8, fontWeight:800, fontSize:14 }}><User size={18} style={{ color:'#16a34a' }}/> Espace Patient →</span>
                   <small style={{ color:'#64748b', fontSize:11 }}>Accédez à votre suivi, messages et bilans</small>
                 </button>
+              </div>
+              <div style={{ marginTop: 24, padding: 20, background: '#f8fafc', border: '1px solid #e2e8f0', borderRadius: 12 }}>
+                <p style={{ margin: '0 0 12px', fontSize: 13, color: '#475569', fontWeight: 600 }}>Accès rapide démo :</p>
+                <div style={{ display: 'flex', justifyContent: 'center', gap: 16, flexWrap: 'wrap' }}>
+                  <div style={{ textAlign: 'center' }}>
+                    <QRCodeSVG value="https://cardiorisk-demo.onrender.com" size={100} />
+                    <p style={{ margin: '8px 0 0', fontSize: 11, color: '#64748b' }}>cardiorisk-demo.onrender.com</p>
+                  </div>
+                </div>
               </div>
             </div>
           )}
