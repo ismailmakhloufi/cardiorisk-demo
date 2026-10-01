@@ -835,8 +835,8 @@ function App() {
             <div className="importExportGrid">
               <div className="importBox">
                 <Upload size={34} />
-                <h3>Importer un fichier</h3>
-                <p>Le fichier doit contenir : nom, prénom, date_naissance, sexe et les 16 variables du modèle.</p>
+                <h3>Importer des patients</h3>
+                <p>Fichier CSV ou Excel avec : nom, prénom, date_naissance, sexe, et les variables cliniques (BNP, dose Lasilix, etc.).</p>
                 <label className="fileBtn">
                   Choisir un fichier CSV ou Excel
                   <input type="file" accept=".csv,.xlsx,.xls" onChange={(e) => importPatients(e.target.files?.[0])} />
@@ -845,14 +845,14 @@ function App() {
               </div>
               <div className="importBox">
                 <Download size={34} />
-                <h3>Exporter les patients</h3>
-                <p>Exporter tous les patients et leurs consultations dans un fichier Excel.</p>
+                <h3>Exporter la cohorte</h3>
+                <p>Téléchargez l'historique complet de vos patients et consultations au format Excel.</p>
                 <button className="primaryBtn" onClick={exportPatients}><Download size={18} /> Exporter Excel</button>
               </div>
             </div>
             <div className="columnsHint">
-              <b>Colonnes attendues  :</b>
-              <code>nom, prenom, date_naissance, sexe, espace_PR, cause_valvulaire, PAD, PAS, OG, Uree, statine, ATCD_d_hospitalisation, IMC, IEC_dose, FQ_ECG_sortie, HTAP, TP, lymphocyte, ARM, QT_corrige, Glycemie_a_jeun, ProBNP, bnp, dose_de_lasilix</code>
+              <b>Colonnes obligatoires :</b>
+              <code>nom, prenom, date_naissance, sexe, espace_PR, cause_valvulaire, PAD, PAS, OG, Uree, statine, ATCD_d_hospitalisation, IMC, IEC_dose, FQ_ECG_sortie, HTAP, TP, lymphocyte, ARM, QT_corrige, Glycemie_a_jeun, BNP, dose_de_lasilix</code>
               <b>Colonnes ordonnance optionnelles :</b>
               <code>lasilix, betabloquants, dose_BB_pourcentage, plavix_cardiocine, sintrome_aod, plavix, cardiocine100, sintrom, AOD, ARM, INH_SGLT2, Ivabradine</code>
             </div>
