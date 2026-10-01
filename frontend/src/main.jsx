@@ -610,7 +610,7 @@ function App() {
           {space==='selector' && (
             <div className="panel" style={{ textAlign:'center', padding: 32 }}>
               <h1 style={{ margin:'0 0 6px', fontSize:26, color:'#0f172a' }}>CardioRisk AI — Prédiction & Suivi Insuffisance Cardiaque</h1>
-              <p style={{ margin:'0 0 18px', color:'#64748b', fontSize:14 }}>Réduisez les réhospitalisations de 30% grâce à l'IA prédictive et au suivi patient connecté</p>
+              <p style={{ margin:'0 0 18px', color:'#64748b', fontSize:14 }}>Anticipez la décompensation, personnalisez la prise en charge, transformez le suivi cardiaque</p>
               <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:12, marginTop:14 }}>
                 <button onClick={()=>setSpace('doctor')} style={{ cursor:'pointer', background:'linear-gradient(135deg,#4f46e5,#06b6d4)', color:'white', border:'0', borderRadius:14, padding:'16px 14px', display:'grid', gap:4, textAlign:'left' }}>
                   <span style={{ display:'flex', alignItems:'center', gap:8, fontWeight:800, fontSize:14 }}><Stethoscope size={18}/> Espace Médecin →</span>
