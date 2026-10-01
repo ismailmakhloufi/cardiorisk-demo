@@ -768,6 +768,17 @@ def change_patient_password(payload: PatientChangePassword):
     auth["password_hash"] = _password_hash(payload.new_password)
     auth["must_change_password"] = False
     _save_patients_auth(auths)
+    # Send confirmation message to patient with new password
+    messages = _load_messages()
+    messages.append({
+        "id": f"msg-{uuid.uuid4().hex[:8]}",
+        "patient_auth_id": auth.get("id"),
+        "doctor_id": auth.get("doctor_id"),
+        "sender_role": "doctor",
+        "content": f"Votre mot de passe a été modifié avec succès.\nNouveau mot de passe : {payload.new_password}\nConnectez-vous avec ce nouveau mot de passe lors de votre prochaine connexion.",
+        "created_at": datetime.now().isoformat(timespec="seconds"),
+    })
+    _save_messages(messages)
     public = {k: v for k, v in auth.items() if k != "password_hash"}
     return {"patient": public, "message": "Mot de passe modifié avec succès"}
 
