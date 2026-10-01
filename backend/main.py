@@ -419,6 +419,54 @@ def _matches_doctor(patient: Dict, doctor_id: Optional[str]) -> bool:
     return not doctor_id or patient.get("doctor_id", "default") == doctor_id
 
 
+def _generate_patient_email(nom: str, prenom: str, doctor_id: str) -> str:
+    base = f"{prenom.lower()}.{nom.lower()}"
+    email = f"{base}@cardiorisk.ai"
+    auths = _load_patients_auth()
+    existing_emails = {a.get("email") for a in auths if a.get("doctor_id") == doctor_id}
+    suffix = 1
+    while email in existing_emails:
+        suffix += 1
+        email = f"{prenom.lower()}.{nom.lower()}.{suffix}@cardiorisk.ai"
+    return email
+
+
+def _create_patient_auth_if_needed(nom: str, prenom: str, date_naissance: str, sexe: str, doctor_id: str) -> str:
+    email = _generate_patient_email(nom, prenom, doctor_id)
+    auths = _load_patients_auth()
+    # check if already exists for this doctor
+    for a in auths:
+        if a.get("email") == email and a.get("doctor_id") == doctor_id:
+            return a.get("id")
+    pid = f"pat-{uuid.uuid4().hex[:8]}"
+    auth_record = {
+        "id": pid,
+        "email": email,
+        "nom": nom.strip(),
+        "prenom": prenom.strip(),
+        "doctor_id": doctor_id,
+        "date_naissance": date_naissance,
+        "sexe": sexe,
+        "password_hash": _password_hash("0000"),
+        "created_at": datetime.now().isoformat(timespec="seconds"),
+        "must_change_password": True,
+    }
+    auths.append(auth_record)
+    _save_patients_auth(auths)
+    # send welcome message to patient
+    messages = _load_messages()
+    messages.append({
+        "id": f"msg-{uuid.uuid4().hex[:8]}",
+        "patient_auth_id": pid,
+        "doctor_id": doctor_id,
+        "sender_role": "doctor",
+        "content": f"Bienvenue sur CardioRisk AI ! Votre compte a été créé par votre cardiologue.\nIdentifiants : {email} / 0000\nConnectez-vous sur l'application et changez votre mot de passe dès la première connexion.",
+        "created_at": datetime.now().isoformat(timespec="seconds"),
+    })
+    _save_messages(messages)
+    return pid
+
+
 def _save_patient_record(patient: PatientSave) -> Dict:
     patients = _load_patients()
     medical = _medical_values(patient)
@@ -444,6 +492,8 @@ def _save_patient_record(patient: PatientSave) -> Dict:
             "consultations": [],
         }
         patients.append(record)
+        # auto-create patient auth account
+        _create_patient_auth_if_needed(patient.nom, patient.prenom, patient.date_naissance, patient.sexe, patient.doctor_id)
     else:
         record["nom"] = patient.nom or record.get("nom", "")
         record["prenom"] = patient.prenom or record.get("prenom", "")
