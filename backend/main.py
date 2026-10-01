@@ -266,6 +266,12 @@ class PatientAuthLogin(BaseModel):
     password: str
 
 
+class PatientChangePassword(BaseModel):
+    patient_auth_id: str
+    current_password: str
+    new_password: str = Field(..., min_length=4)
+
+
 class MessageCreate(BaseModel):
     patient_auth_id: str
     doctor_id: str
@@ -691,6 +697,19 @@ def get_patient(patient_id: int, doctor_id: Optional[str] = None):
     raise HTTPException(status_code=404, detail="Patient non trouvé")
 
 
+@app.get("/api/patients/{patient_id}/auth")
+def get_patient_auth_by_patient(patient_id: int, doctor_id: Optional[str] = None):
+    patients = _load_patients()
+    patient = next((p for p in patients if p["id"] == patient_id and _matches_doctor(p, doctor_id)), None)
+    if not patient:
+        raise HTTPException(status_code=404, detail="Patient non trouvé")
+    auths = _load_patients_auth()
+    auth = next((a for a in auths if a.get("email", "").startswith(f"{patient['prenom'].lower()}.{patient['nom'].lower()}") and a.get("doctor_id") == doctor_id), None)
+    if not auth:
+        return {"email": None, "isNew": False}
+    return {"email": auth.get("email"), "isNew": auth.get("must_change_password", False)}
+
+
 # ── Patient portal & communication (non-destructive extension) ──
 
 @app.get("/api/doctors/list")
@@ -736,6 +755,21 @@ def login_patient(payload: PatientAuthLogin):
             public = {k: v for k, v in a.items() if k != "password_hash"}
             return {"patient": public}
     raise HTTPException(status_code=401, detail="Email ou mot de passe incorrect")
+
+
+@app.post("/api/patient/change-password")
+def change_patient_password(payload: PatientChangePassword):
+    auths = _load_patients_auth()
+    auth = next((a for a in auths if a.get("id") == payload.patient_auth_id), None)
+    if not auth:
+        raise HTTPException(status_code=404, detail="Patient non trouvé")
+    if auth.get("password_hash") != _password_hash(payload.current_password):
+        raise HTTPException(status_code=401, detail="Mot de passe actuel incorrect")
+    auth["password_hash"] = _password_hash(payload.new_password)
+    auth["must_change_password"] = False
+    _save_patients_auth(auths)
+    public = {k: v for k, v in auth.items() if k != "password_hash"}
+    return {"patient": public, "message": "Mot de passe modifié avec succès"}
 
 
 @app.get("/api/patient/me")

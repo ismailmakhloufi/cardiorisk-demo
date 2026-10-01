@@ -1,6 +1,6 @@
 import React from 'react';
 import { createRoot } from 'react-dom/client';
-import { Activity, AlertTriangle, BarChart3, CalendarClock, Download, FileText, HeartPulse, Home, Loader2, MessageSquare, Send, Settings, ShieldPlus, Stethoscope, Upload, User, UserPlus, Users } from 'lucide-react';
+import { Activity, AlertTriangle, BarChart3, CalendarClock, Download, FileText, HeartPulse, Home, Loader2, Lock, MessageSquare, Send, Settings, ShieldPlus, Stethoscope, Upload, User, UserPlus, Users } from 'lucide-react';
 import './styles.css';
 
 const API_URL = import.meta.env.VITE_API_URL || (import.meta.env.DEV ? 'http://localhost:8000' : '');
@@ -302,6 +302,10 @@ function App() {
     }
   };
 
+  const [forcePasswordChange, setForcePasswordChange] = React.useState(false);
+  const [newPassword, setNewPassword] = React.useState('');
+  const [confirmPassword, setConfirmPassword] = React.useState('');
+
   const authenticatePatient = async () => {
     setError('');
     setLoading(true);
@@ -315,6 +319,43 @@ function App() {
       localStorage.removeItem('icfer_doctor');
       setPatientAuth(data.patient);
       setDoctor(null);
+      if (data.patient.must_change_password) {
+        setForcePasswordChange(true);
+      } else {
+        setSpace('patient');
+      }
+    } catch (e) {
+      const msg = e?.message || e?.detail || (typeof e === 'string' ? e : JSON.stringify(e)) || 'Erreur inconnue';
+      setError(msg);
+    } finally { setLoading(false); }
+  };
+
+  const changePassword = async () => {
+    if (!newPassword || newPassword.length < 4) {
+      setError('Le mot de passe doit contenir au moins 4 caractères');
+      return;
+    }
+    if (newPassword !== confirmPassword) {
+      setError('Les mots de passe ne correspondent pas');
+      return;
+    }
+    setError('');
+    setLoading(true);
+    try {
+      const res = await fetch(`${API_URL}/api/patient/change-password`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ patient_auth_id: patientAuth.id, current_password: patientForm.password, new_password: newPassword })
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.detail || 'Erreur changement mot de passe');
+      // update localStorage with updated patient
+      const updatedPatient = { ...patientAuth, must_change_password: false };
+      localStorage.setItem('icfer_patient', JSON.stringify(updatedPatient));
+      setPatientAuth(updatedPatient);
+      setForcePasswordChange(false);
+      setNewPassword('');
+      setConfirmPassword('');
       setSpace('patient');
     } catch (e) {
       const msg = e?.message || e?.detail || (typeof e === 'string' ? e : JSON.stringify(e)) || 'Erreur inconnue';
@@ -411,8 +452,11 @@ function App() {
     setView('detail');
   };
 
+  const [patientEmailInfo, setPatientEmailInfo] = React.useState(null);
+
   const submit = async (withReport = false) => {
     setError('');
+    setPatientEmailInfo(null);
     if (!identity.nom || !identity.prenom || !identity.date_naissance || !identity.sexe) {
       setError('Veuillez remplir nom, prénom, date de naissance et sexe.');
       return;
@@ -450,6 +494,16 @@ function App() {
       const saved = await saveRes.json();
       setSelectedPatient(saved.record);
       await loadPatients();
+      // fetch generated patient email
+      if (saved.record) {
+        const authRes = await fetch(`${API_URL}/api/patients/${saved.record.id}/auth?doctor_id=${currentDoctorId}`);
+        if (authRes.ok) {
+          const authData = await authRes.json();
+          if (authData.email) {
+            setPatientEmailInfo({ email: authData.email, isNew: authData.isNew });
+          }
+        }
+      }
     } catch (e) {
       const msg = e?.message || e?.detail || (typeof e === 'string' ? e : JSON.stringify(e)) || 'Erreur inconnue';
       setError(msg);
@@ -619,6 +673,25 @@ function App() {
   // ── Espace Patient connecté ──
   if (patientAuth) {
     const doctorName = doctorsList.find(d=>d.id===patientAuth.doctor_id)?.name || patientAuth.doctor_id;
+    
+    // Forced password change view
+    if (forcePasswordChange) {
+      return (
+        <div className="loginScreen">
+          <div className="loginCard" style={{ margin:'0 auto', maxWidth:400 }}>
+            <div className="brand loginBrand"><HeartPulse size={28} /><div><b>CardioRisk AI</b><span>Sécurité — Premier accès</span></div></div>
+            <h1>Changer votre mot de passe</h1>
+            <p style={{ color:'#64748b', marginBottom:16 }}>Première connexion détectée. Pour votre sécurité, définissez un nouveau mot de passe.</p>
+            {error && <div className="error">{error}</div>}
+            <label><span>Nouveau mot de passe</span><input type="password" value={newPassword} onChange={(e)=>setNewPassword(e.target.value)} placeholder="Au moins 4 caractères" autoComplete="new-password" /></label>
+            <label><span>Confirmer le mot de passe</span><input type="password" value={confirmPassword} onChange={(e)=>setConfirmPassword(e.target.value)} placeholder="Confirmer" autoComplete="new-password" /></label>
+            <button className="primaryBtn" onClick={changePassword} disabled={loading} style={{ width:'100%', marginTop:8 }}>{loading ? <Loader2 className="spin" size={18}/> : <Lock size={18}/>} Valider et accéder à mon espace</button>
+            <button className="ghostBtn loginSwitch" onClick={logoutPatient} style={{ width:'100%', marginTop:12 }}>Annuler et se déconnecter</button>
+          </div>
+        </div>
+      );
+    }
+
     return (
       <div className="appShell" style={{ gridTemplateColumns:'1fr' }}>
         <main style={{ maxWidth: 900, margin:'0 auto', width:'100%' }}>
@@ -934,6 +1007,21 @@ function App() {
               {showOrdonnance && <Ordonnance variables={variables} setVariables={setVariables} />}
               <button onClick={() => submit(false)} disabled={loading} className="secondaryBtn">{loading ? <Loader2 className="spin" size={18} /> : <Activity size={18} />} Calculer le score et enregistrer</button>
               <button onClick={() => submit(true)} disabled={loading} className="primaryBtn actionGap">{loading ? <Loader2 className="spin" size={18} /> : <Stethoscope size={18} />} Générer rapport IA</button>
+              {patientEmailInfo && (
+                <div style={{ marginTop: 16, padding: 16, background: 'linear-gradient(135deg, #eef2ff, #f0f9ff)', border: '1px solid #c7d2fe', borderRadius: 12, display: 'flex', alignItems: 'center', gap: 12 }}>
+                  <Mail size={24} style={{ color: '#4f46e5' }} />
+                  <div>
+                    <strong style={{ color: '#1e293b', fontSize: 14 }}>Compte patient créé automatiquement</strong>
+                    <p style={{ margin: '4px 0 0', color: '#475569', fontSize: 13 }}>
+                      Email : <code style={{ background: '#eef2ff', padding: '2px 6px', borderRadius: 4 }}>{patientEmailInfo.email}</code>
+                      {patientEmailInfo.isNew && <span style={{ marginLeft: 8, padding: '2px 6px', background: '#fef3c7', color: '#92400e', borderRadius: 999, fontSize: 11, fontWeight: 600 }}>Nouveau compte</span>}
+                    </p>
+                    <p style={{ margin: '8px 0 0', color: '#64748b', fontSize: 12 }}>
+                      Mot de passe temporaire : <code style={{ background: '#eef2ff', padding: '2px 6px', borderRadius: 4 }}>0000</code> — Le patient devra le changer à sa première connexion.
+                    </p>
+                  </div>
+                </div>
+              )}
             </section>
 
             {result && <Recommendations result={result} />}
