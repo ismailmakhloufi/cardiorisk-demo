@@ -466,7 +466,7 @@ def _create_patient_auth_if_needed(nom: str, prenom: str, date_naissance: str, s
         "patient_auth_id": pid,
         "doctor_id": doctor_id,
         "sender_role": "doctor",
-        "content": f"Bienvenue sur CardioRisk AI ! Votre compte a été créé par votre cardiologue.\nIdentifiants : {email} / 0000\nConnectez-vous sur l'application et changez votre mot de passe dès la première connexion.",
+        "content": f"Bienvenue sur CardioRisk AI ! Votre compte a été créé par votre cardiologue.",
         "created_at": datetime.now().isoformat(timespec="seconds"),
     })
     _save_messages(messages)
